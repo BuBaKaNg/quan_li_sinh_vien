@@ -18,10 +18,7 @@ public:
     node tim_vet_can(QString &mssv); //Tìm được thì trả về node không thì trả về null
     node create_new_node(SinhVien &sv);
     node them_sv(SinhVien &sv); // Trả về node vừa thêm, hoặc trả về null nếu thêm thất bại
-    QString sua_mssv(QString &mssv, QString &mssv_da_sua); //trả về mssv vừa sửa, trả về chuỗi rỗng nếu sửa thất bại
-    QString sua_ten(QString &mssv, QString &ten);
-    QString sua_ho(QString &mssv, QString &ho);
-    qint32 sua_diem(QString &mssv, qint32 diem); //trả về diem nếu thêm thành công hoặc -1 nếu thất bại
+    SinhVien sua_sv(QString &mssv, SinhVien &sv);
     bool xoa_sv(QString &mssv); // Trả về true nếu xóa thành công và false nếu thất bại
     QList<SinhVien> liet_ke_diem_thap(); // Trả về danh sách rỗng nếu không có sinh viên
     //Và ngược lại trả về danh sách các sv điểm thấp nhất , ví dụ các sv có cùng điểm 4
