@@ -1,12 +1,21 @@
 #include "sinhvien.h"
 #include <QLocale>
 #include <QTextStream>
-SinhVien::SinhVien(const QString &mssv, const QString &ho, const QString &ten, qint32 diem) : mssv(mssv), ho(ho), ten(ten), diem(diem){}
+#include "bits/stdc++.h"
+using namespace std;
+SinhVien::SinhVien(){
+    mssv = "";
+    ten = "";
+    ho = "";
+    diem = 0;
+}
+SinhVien::SinhVien(const QString &mssv, const QString &ho, const QString &ten, qreal diem) : mssv(mssv), ho(ho), ten(ten), diem(diem){}
+
 void SinhVien::in_thong_tin() {
-    qDebug() << QString::fromUtf8("MSSV: ") << mssv;
-    qDebug() << QString::fromUtf8("Họ: ") << ho;
-    qDebug() << QString::fromUtf8("Tên: ") << ten;
-    qDebug() << QString::fromUtf8("Điểm: ") << diem;
+    qDebug() << "MSSV:" << mssv;
+    cout << "Họ"  << ho.toStdString() << endl;
+    qDebug() << "Tên:" << ten;
+    qDebug() << "Điểm:" << diem;
 }
 
 // Getter
@@ -22,7 +31,7 @@ QString SinhVien::getTen() const {
     return ten;
 }
 
-qint32 SinhVien::getDiem() const {
+qreal SinhVien::getDiem() const {
     return diem;
 }
 
@@ -39,6 +48,6 @@ void SinhVien::setTen(const QString &value) {
     ten = value;
 }
 
-void SinhVien::setDiem(qint32 value) {
+void SinhVien::setDiem(qreal value) {
     diem = value;
 }

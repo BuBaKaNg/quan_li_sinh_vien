@@ -10,22 +10,23 @@ private:
     QString mssv;
     QString ho;
     QString ten;
-    qint32 diem;
+    qreal diem;
 public:
-    SinhVien(const QString &mssv, const QString &ho, const QString &ten, qint32 diem);
+    SinhVien();
+    SinhVien(const QString &mssv, const QString &ho, const QString &ten, qreal diem);
     void in_thong_tin();
     QString ten_dao_nguoc();
     // Getter
     QString getMssv() const;
     QString getHo() const;
     QString getTen() const;
-    qint32 getDiem() const;
+    qreal getDiem() const;
 
     // Setter
     void setMssv(const QString &value);
     void setHo(const QString &value);
     void setTen(const QString &value);
-    void setDiem(qint32 value);
+    void setDiem(qreal value);
 };
 
 
