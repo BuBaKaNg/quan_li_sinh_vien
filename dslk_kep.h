@@ -21,10 +21,7 @@ public:
     node them_sv(SinhVien &sv); // Trả về node vừa thêm, hoặc trả về null nếu thêm thất bại
     SinhVien sua_sv(QString &mssv, SinhVien &sv);
     bool xoa_sv(QString &mssv); // Trả về true nếu xóa thành công và false nếu thất bại
-    QList<SinhVien> liet_ke_diem_thap(); // Trả về danh sách rỗng nếu không có sinh viên
     //Và ngược lại trả về danh sách các sv điểm thấp nhất , ví dụ các sv có cùng điểm 4
-    QList<SinhVien> liet_ke_diem_cao(); // tương tự
-    qreal tinh_tb(); // Trả về -1.0 lấy độ chính xác 1 chữ số thập phân nếu thất bại, thành công thì đưa ra điểm trung bình
     void buble_sort(bool(*cmp)(node &a, node &b));
     void insertion_sort(bool(*cmp)(node &a, node &b));
     // void quick_sort(); // Chỉ áp dụng mảng hoặc dslk kép

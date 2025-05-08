@@ -5,15 +5,7 @@ dslk_don::dslk_don() {
     first = nullptr;
 }
 
-// Getter: trả về con trỏ first
-node* dslk_don::get_first() const {
-    return first;
-}
 
-// Setter: gán giá trị cho con trỏ first
-void dslk_don::set_first(node* newFirst) {
-    first = newFirst;
-}
 
 bool dslk_don::xoa_dau(){
     node* p;
@@ -84,28 +76,6 @@ bool dslk_don::xoa_sv(QString &mssv){
     return 0;
 }
 
-dslk_don dslk_don::liet_ke_diem_thap(){
-
-}
-
-dslk_don dslk_don::liet_ke_diem_cao(){
-    if(isEmpty()) return {};
-    qreal ma = -1;
-    node* p = first;
-    while(p != nullptr){
-        ma = qMax(ma, p->sv.getDiem());
-        p = p->next;
-    }
-    p = first;
-    dslk_don ans;
-    while(p != nullptr){
-        if(ma == p->sv.getDiem()){
-            ans.them_sv(p->sv);
-        }
-        p = p->next;
-    }
-    return ans;
-}
 
 
 

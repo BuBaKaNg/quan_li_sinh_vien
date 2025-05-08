@@ -26,8 +26,8 @@ void test() {
         ds.them_sv(x);
     }
     Helper<nodeDSLKD, dslk_don> helper;
-    dslk_don list = helper.liet_ke_sv_diem_thap(ds.get_first());
-    helper.in_danh_sach(list.get_first());
+    dslk_don list = helper.liet_ke_sv_diem_thap(ds.getFirst());
+    helper.in_danh_sach(list.getFirst());
 }
 
 int main(int argc, char *argv[])

@@ -39,7 +39,7 @@ public:
     ListType liet_ke_sv_diem_thap(NodeType *first, bool isVong = false){
         if(!first) return {};
         qreal mi = 11;
-        NodeType p = first;
+        NodeType* p = first;
         while(p != nullptr && (!isVong || p != first)){
             mi = qMin(mi, p->sv.getDiem());
             p = p->next;
@@ -58,7 +58,7 @@ public:
     ListType liet_ke_sv_diem_cao(NodeType *first, bool isVong = false){
         if(!first) return {};
         qreal ma = -1;
-        NodeType p = first;
+        NodeType* p = first;
         while(p != nullptr && (!isVong || p != first)){
             ma = qMin(ma, p->sv.getDiem());
             p = p->next;
