@@ -6,23 +6,16 @@
 #include <QDebug>
 #include "bits/stdc++.h"
 #include "helper.h"
-QList<SinhVien> danhSach = {
-    SinhVien("SV001", "Nguyen", "An", 10),
-    SinhVien("SV002", "Le", "Binh", 10),
-    SinhVien("SV003", "Tran", "Cuong", 1),
-    SinhVien("SV004", "Pham", "Dung", 10),
-    SinhVien("SV005", "Ho", "Em", 10),
-    SinhVien("SV012", "Dang", "Giang", 1),
-    SinhVien("SV007", "Bui", "Hoa", 10),
-    SinhVien("SV023", "Do", "Khanh", 10),
-    SinhVien("SV009", "Trinh", "Lam", 10),
-    SinhVien("SV010", "Ngo", "Minh", 10)
-};
+#include "read_write.h"
+
 using namespace std;
 
+QList<SinhVien> danhSach = {};
+
 void test() {
+    QList<SinhVien> temp = loadDuLieu("E:\\learnLongLife\\c++\\quan_li_sinh_vien\\DSSV.csv");
     dslk_don ds;
-    for(auto x : danhSach){
+    for(auto x : temp){
         ds.them_sv(x);
     }
     Helper<nodeDSLKD, dslk_don> helper;

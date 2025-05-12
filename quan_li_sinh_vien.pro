@@ -18,6 +18,7 @@ SOURCES += \
     dslk_don.cpp \
     dslk_kep.cpp \
     dslk_vong.cpp \
+    read_write.cpp \
     sinhvien.cpp \
 
 
@@ -27,6 +28,7 @@ HEADERS += \
     dslk_don.h \
     dslk_kep.h \
     dslk_vong.h \
+    read_write.h \
     sinhvien.h \
 
 FORMS += \
