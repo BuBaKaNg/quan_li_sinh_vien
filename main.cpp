@@ -12,9 +12,9 @@ QList<SinhVien> danhSach = {
     SinhVien("SV003", "Tran", "Cuong", 1),
     SinhVien("SV004", "Pham", "Dung", 10),
     SinhVien("SV005", "Ho", "Em", 10),
-    SinhVien("SV006", "Dang", "Giang", 1),
+    SinhVien("SV012", "Dang", "Giang", 1),
     SinhVien("SV007", "Bui", "Hoa", 10),
-    SinhVien("SV008", "Do", "Khanh", 10),
+    SinhVien("SV023", "Do", "Khanh", 10),
     SinhVien("SV009", "Trinh", "Lam", 10),
     SinhVien("SV010", "Ngo", "Minh", 10)
 };
@@ -26,8 +26,8 @@ void test() {
         ds.them_sv(x);
     }
     Helper<nodeDSLKD, dslk_don> helper;
-    dslk_don list = helper.liet_ke_sv_diem_thap(ds.getFirst());
-    helper.in_danh_sach(list.getFirst());
+    helper.insertion_sort(ds.getFirst());
+    helper.in_danh_sach(ds.getFirst());
 }
 
 int main(int argc, char *argv[])
