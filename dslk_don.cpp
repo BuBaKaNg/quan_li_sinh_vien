@@ -1,6 +1,7 @@
 #include "dslk_don.h"
 #include <QString>
 
+
 dslk_don::dslk_don() {
     first = nullptr;
 }
@@ -31,28 +32,29 @@ bool dslk_don::isEmpty(){
     return first == nullptr;
 }
 
-node* dslk_don::create_new_node(SinhVien &sv) {
+dslk_don::node* dslk_don::create_new_node(SinhVien &sv) {
     node* p = new node();
     p->next = nullptr;
     p->sv = sv;
     return p;
 }
 
-node* dslk_don::tim_vet_can(QString &mssv){
+dslk_don::node* dslk_don::tim_vet_can(QString &mssv){
     node* p;
     for (p = first;  p  != nullptr ; p=p->next )
         if ( p->sv.getMssv() == mssv  ) return p;
     return nullptr;
 }
 
-node* dslk_don::them_sv(SinhVien &sv){
+dslk_don::node* dslk_don::them_sv(SinhVien &sv){
     node *p = create_new_node(sv);
     p->next = first;
     first = p;
+    qDebug() << p;
     return p;
 }
 
-node* dslk_don::sua_sv(QString &mssv, SinhVien &sv){
+dslk_don::node* dslk_don::sua_sv(QString &mssv, SinhVien &sv){
     node* p = tim_vet_can(mssv);
     if(p != nullptr){
         p->sv = sv;
@@ -77,5 +79,7 @@ bool dslk_don::xoa_sv(QString &mssv){
 }
 
 
-
+dslk_don::~dslk_don() {
+    // nếu không cần làm gì, để trống cũng được
+}
 

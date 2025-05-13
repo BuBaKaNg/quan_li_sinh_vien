@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QWidget" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>670</width>
+    <height>505</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Quản lý Sinh viên</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <layout class="QHBoxLayout" name="importLayout">
+     <item>
+      <widget class="QPushButton" name="btnImportFile">
+       <property name="text">
+        <string>Nhập tệp</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelFilePath">
+       <property name="text">
+        <string>Chưa chọn tệp</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="storageMethodLayout">
+     <item>
+      <widget class="QLabel" name="labelStorageMethod">
+       <property name="text">
+        <string>Phương thức lưu trữ:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBoxStorageMethod">
+       <item>
+        <property name="text">
+         <string>Mảng</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Danh sách liên kết đơn</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Danh sách liên kết vòng</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="actionLayout">
+     <item>
+      <widget class="QPushButton" name="btnLoadData">
+       <property name="text">
+        <string>Tải dữ liệu</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnExit">
+       <property name="text">
+        <string>Thoát</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tableWidget">
+     <column>
+      <property name="text">
+       <string>MSSV</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Họ</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Tên</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Lớp</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Điểm</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

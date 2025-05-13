@@ -8,7 +8,7 @@ class Helper
 {
 public:
     Helper(){};
-
+    ~Helper(){};
     void in_danh_sach(NodeType* first, bool isVong = false) {
         if (!first) {
             qDebug() << "Danh sách rỗng.";
@@ -97,6 +97,7 @@ public:
                 current = current->next;
             }
         } while (swapped);
+
     }
 
     void selection_sort(NodeType* first, bool isVong = false, bool(*cmp)(NodeType* a, NodeType* b) = cmp_bang_mssv) {

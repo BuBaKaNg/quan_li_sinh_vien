@@ -1,21 +1,30 @@
 #ifndef DSLK_DON_H
 #define DSLK_DON_H
 #include "SinhVien.h"
+#include "DanhSach.h"
 #include <QList>
 #include "getter_setter_auto.cpp"
-struct nodeDSLKD {
+struct nodeDSLKD : public BaseNode {
     SinhVien sv;
     nodeDSLKD* next;
+    ~nodeDSLKD(){};
 };
 
-typedef nodeDSLKD node;
+
 
 class dslk_don
-{   
-private:
-    PROPERTY(nodeDSLKD*, first, First);
+{
+public:
+    struct node : public BaseNode {
+        SinhVien sv;
+        node* next;
+    };
+
+PROPERTY(node*, first, First);
+
 public:
     dslk_don();
+    ~dslk_don();
     bool xoa_dau();
     bool xoa_sau(node* p);
     bool isEmpty(); // Kiểm tra dslk có rỗng không

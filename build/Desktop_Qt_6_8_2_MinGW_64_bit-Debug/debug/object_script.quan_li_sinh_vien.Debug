@@ -1,0 +1,11 @@
+debug/helper.o
+debug/main.o
+debug/mainwindow.o
+debug/dslk_don.o
+debug/dslk_kep.o
+debug/dslk_vong.o
+debug/read_write.o
+debug/sinhvien.o
+debug/studentmanager.o
+debug/moc_mainwindow.o
+debug/moc_studentmanager.o

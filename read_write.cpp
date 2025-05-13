@@ -5,6 +5,10 @@
 #include <QIODevice>
 #include <QFile>
 #include "read_write.h"
+#include "DanhSach.h"
+#include "dslk_don.h"
+// #include "dslk_vong.h"
+// #include "dslk_kep.h"
 using namespace std;
 
 
@@ -53,14 +57,15 @@ bool check_data_null(SinhVien x){
     return true;
 }
 
-QList<SinhVien> loadDuLieu(const QString& filePath) {
-    QList<SinhVien> danhSach;
+template <typename ListType>
+void loadDuLieu(QString& filePath, ListType& danhSach) {
+
     QSet<QString> mssvSet;
     QFile file(filePath);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Không thể mở file:" << file.errorString();
-        return {};
+        return;
     }
     QTextStream in(&file);
     bool check = true;
@@ -96,14 +101,8 @@ QList<SinhVien> loadDuLieu(const QString& filePath) {
             check = false;
         }
 
-        if (!check) {
-            qWarning() << "Vui lòng sửa dữ liệu hoặc chọn tập tin khác.";
-            return {};
-        }
-
         mssvSet.insert(sv.getMssv());
-        danhSach.append(sv);
+        danhSach.them_sv(sv);
     }
-    if(check) return danhSach;
-    else return {};
+
 }

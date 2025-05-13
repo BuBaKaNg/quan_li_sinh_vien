@@ -14,24 +14,26 @@ SOURCES += \
     getter_setter_auto.cpp \
     helper.cpp \
     main.cpp \
-    mainwindow.cpp \
     dslk_don.cpp \
     dslk_kep.cpp \
     dslk_vong.cpp \
+    mainwindow.cpp \
     read_write.cpp \
-    sinhvien.cpp \
+    sinhvien.cpp
 
 
 HEADERS += \
+    DanhSach.h \
     helper.h \
-    mainwindow.h \
     dslk_don.h \
     dslk_kep.h \
     dslk_vong.h \
+    mainwindow.h \
     read_write.h \
-    sinhvien.h \
+    sinhvien.h
 
 FORMS += \
+    form.ui \
     mainwindow.ui
 
 # Default rules for deployment.

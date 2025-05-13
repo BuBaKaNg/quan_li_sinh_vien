@@ -1,0 +1,11 @@
+release/helper.o
+release/main.o
+release/mainwindow.o
+release/dslk_don.o
+release/dslk_kep.o
+release/dslk_vong.o
+release/read_write.o
+release/sinhvien.o
+release/studentmanager.o
+release/moc_mainwindow.o
+release/moc_studentmanager.o
