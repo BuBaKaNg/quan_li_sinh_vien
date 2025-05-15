@@ -308,7 +308,7 @@ void MainWindow::on_listMinBtn_clicked()
     default:
         break;
     }
-    resert();
+    ui->huyMaxBtn->setEnabled(false);
 }
 
 
@@ -336,22 +336,22 @@ void MainWindow::on_listMaxBtn_clicked()
     default:
         break;
     }
+    ui->huyMinBtn->setEnabled(false);
 }
 
 
 void MainWindow::on_huyMaxBtn_clicked()
 {
-    resert();
         loadToTable(ds_don, ui->tableWidget);
+    ui->huyMaxBtn->setEnabled(false);
 
 }
 
 
 void MainWindow::on_huyMinBtn_clicked()
 {
-    resert();
     loadToTable(ds_don, ui->tableWidget);
-
+    ui->huyMinBtn->setEnabled(false);
 }
 
 template<typename ListType>
@@ -568,6 +568,5 @@ void MainWindow::resert() {
 void MainWindow::on_huySearchBtn_clicked()
 {
     loadToTable(ds_don, ui->tableWidget);
-    resert();
 }
 
