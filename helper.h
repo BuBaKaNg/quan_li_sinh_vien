@@ -4,6 +4,7 @@
 #include "cmp.cpp"
 #include "SinhVien.h"
 template <typename NodeType, typename ListType>
+
 class Helper
 {
 public:
@@ -62,7 +63,7 @@ public:
         qreal ma = -1;
         NodeType* p = first;
         while(p != nullptr && (!isVong || p != first)){
-            ma = qMin(ma, p->sv.getDiem());
+            ma = qMax(ma, p->sv.getDiem());
             p = p->next;
         }
         p = first;
@@ -180,6 +181,25 @@ public:
         }
 
         first = sorted; // Cập nhật lại con trỏ đầu
+    }
+
+    bool (*getCmp(int index))(NodeType* a, NodeType* b){
+        switch(index){
+            case 0:
+                return cmp_bang_mssv;
+            case 1:
+                return cmp_bang_ten;
+            case 2:
+                return cmp_bang_diem;
+            case 3:
+                return cmp_bang_ho;
+            case 4:
+                return cmp_bang_lop;
+        }
+    }
+
+    NodeType* tim_kiem_linear(NodeType* first, bool isVong = false, bool(*cmp)(NodeType* a, NodeType* b) = cmp_bang_mssv){
+
     }
 };
 

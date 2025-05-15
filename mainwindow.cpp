@@ -6,7 +6,6 @@
 #include "dslk_don.h"
 #include "helper.h"
 #include <QElapsedTimer>
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -105,6 +104,7 @@ void MainWindow::on_downloadBtn_clicked()
 
 
 
+
 void MainWindow::handleBubbleSort(){
     switch (selectedIndex){
         case 0:
@@ -116,7 +116,9 @@ void MainWindow::handleBubbleSort(){
             QElapsedTimer timer;
             timer.start();  // Bắt đầu đếm thời gian
             Helper<dslk_don::node, dslk_don> helper;
-            helper.buble_sort(ds_don.getFirst());
+            int standardIndex = ui->comboBoxStandarSort->currentIndex();
+            auto cmp = helper.getCmp(standardIndex);
+            helper.buble_sort(ds_don.getFirst(), false, cmp);
             qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
             QString result;
 
@@ -134,6 +136,70 @@ void MainWindow::handleBubbleSort(){
     }
 }
 
+void MainWindow::handleInsertionSort(){
+    switch (selectedIndex){
+    case 0:
+
+        break;
+    case 1:
+        break;
+    case 2: {
+        QElapsedTimer timer;
+        timer.start();  // Bắt đầu đếm thời gian
+        Helper<dslk_don::node, dslk_don> helper;
+        int standardIndex = ui->comboBoxStandarSort->currentIndex();
+        auto cmp = helper.getCmp(standardIndex);
+        helper.insertion_sort(ds_don.getFirst(), false, cmp);
+        qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
+        QString result;
+
+        result = QString::number(nanos / 1'000'000.0, 'f', 3) + " ms";
+        ui->timeSortView->setText(result);
+        loadToTable(ds_don, ui->tableWidget);
+        break;
+    }
+    case 3:
+        break;
+    case 4:
+        break;
+    default:
+        break;
+    }
+}
+
+
+void MainWindow::handleSelectionSort(){
+    switch (selectedIndex){
+    case 0:
+
+        break;
+    case 1:
+        break;
+    case 2: {
+        QElapsedTimer timer;
+        timer.start();  // Bắt đầu đếm thời gian
+        Helper<dslk_don::node, dslk_don> helper;
+        int standardIndex = ui->comboBoxStandarSort->currentIndex();
+        auto cmp = helper.getCmp(standardIndex);
+        helper.selection_sort(ds_don.getFirst(), false, cmp);
+        qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
+        QString result;
+
+        result = QString::number(nanos / 1'000'000.0, 'f', 3) + " ms";
+        ui->timeSortView->setText(result);
+        loadToTable(ds_don, ui->tableWidget);
+        break;
+    }
+    case 3:
+        break;
+    case 4:
+        break;
+    default:
+        break;
+    }
+}
+
+
 void MainWindow::on_sortBtn_clicked()
 {
     switch(sortIndex) {
@@ -144,9 +210,10 @@ void MainWindow::on_sortBtn_clicked()
         handleBubbleSort();
         break;
     case 2:
-        // handleSelectionSort();
+        handleSelectionSort();
         break;
     case 3:
+        handleInsertionSort();
         break;
     case 4:
         break;
@@ -187,5 +254,119 @@ void MainWindow::on_caculateBtn_clicked()
 void MainWindow::on_comboBoxSort_currentIndexChanged(int index)
 {
     sortIndex = index;
+}
+
+
+void MainWindow::on_listMinBtn_clicked()
+{
+    switch (selectedIndex){
+    case 1:
+        break;
+    case 2: {
+        Helper<dslk_don::node, dslk_don> helper;
+        dslk_don list = helper.liet_ke_sv_diem_thap(ds_don.getFirst());
+        loadToTable(list, ui->tableWidget);
+        ui->huyMinBtn->setEnabled(true);
+        break;
+    }
+    case 3:
+        break;
+    case 4:
+        break;
+    default:
+        break;
+    }
+}
+
+
+void MainWindow::on_listMaxBtn_clicked()
+{
+    switch (selectedIndex){
+    case 1:
+        break;
+    case 2: {
+        Helper<dslk_don::node, dslk_don> helper;
+        dslk_don list = helper.liet_ke_sv_diem_cao(ds_don.getFirst());
+        loadToTable(list, ui->tableWidget);
+        ui->huyMaxBtn->setEnabled(true);
+        break;
+    }
+    case 3:
+        break;
+    case 4:
+        break;
+    default:
+        break;
+    }
+}
+
+
+void MainWindow::on_huyMaxBtn_clicked()
+{
+    switch (selectedIndex){
+    case 1:
+        break;
+    case 2: {
+        loadToTable(ds_don, ui->tableWidget);
+        break;
+    }
+    case 3:
+        break;
+    case 4:
+        break;
+    default:
+        break;
+    }
+    ui->huyMaxBtn->setEnabled(false);
+}
+
+
+void MainWindow::on_huyMinBtn_clicked()
+{
+    switch (selectedIndex){
+    case 1:
+        break;
+    case 2: {
+        loadToTable(ds_don, ui->tableWidget);
+
+        break;
+    }
+    case 3:
+        break;
+    case 4:
+        break;
+    default:
+        break;
+    }
+    ui->huyMinBtn->setEnabled(false);
+}
+
+
+void MainWindow::on_comboBoxStandarSort_currentIndexChanged(int index)
+{
+
+}
+
+
+
+
+void MainWindow::on_searchBtn_clicked()
+{
+    QString input = ui->comboBoxSearch->currentText();
+    int index = ui->comboBoxSearch->currentIndex();
+    switch(selectedIndex){
+        case 0:
+        break;
+        case 1:
+            break;
+        case 2: {
+            Helper<dslk_don::node, dslk_don> helper;
+            auto cmp = helper.getCmp(index);
+                break;
+        }
+        case 3:
+            break;
+    }
+
 }
 

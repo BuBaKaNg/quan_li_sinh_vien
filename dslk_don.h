@@ -33,15 +33,10 @@ public:
     node* them_sv(SinhVien &sv); // Trả về node vừa thêm, hoặc trả về null nếu thêm thất bại
     node* sua_sv(QString &mssv, SinhVien &sv);
     bool xoa_sv(QString &mssv); // Trả về true nếu xóa thành công và false nếu thất bại
-    void buble_sort(bool(*cmp)(node &a, node &b));
-    void insertion_sort(bool(*cmp)(node &a, node &b));
     // void quick_sort(); // Chỉ áp dụng mảng hoặc dslk kép
-    void selection_sort(bool(*cmp)(node &a, node &b));
     // void heap_sort(); // Chỉ áp dụng mảng hoặc dslk kép
     void merge_sort(bool(*cmp)(node &a, node &b));
-    bool cmp_bang_diem(node &a, node &b);
-    bool cmp_bang_ten(node &a, node& b);
-    bool cmp_bang_mssv(node &a, node& b);
+
 };
 
 #endif // DSLK_DON_H

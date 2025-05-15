@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1205</width>
+    <width>1264</width>
     <height>657</height>
    </rect>
   </property>
@@ -226,7 +226,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="huySearchBtn">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -281,7 +281,7 @@
      <rect>
       <x>780</x>
       <y>130</y>
-      <width>218</width>
+      <width>222</width>
       <height>31</height>
      </rect>
     </property>
@@ -289,7 +289,7 @@
      <item>
       <widget class="QLabel" name="labelSort">
        <property name="text">
-        <string>Sắp xếp theo</string>
+        <string>Sắp xếp bằng</string>
        </property>
       </widget>
      </item>
@@ -400,7 +400,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
    </widget>
    <widget class="QWidget" name="horizontalLayoutWidget_10">
@@ -421,7 +421,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="huyMinBtn">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -450,7 +450,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="huyMaxBtn">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -461,13 +461,51 @@
      </item>
     </layout>
    </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_12">
+    <property name="geometry">
+     <rect>
+      <x>1010</x>
+      <y>130</y>
+      <width>218</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <item>
+      <widget class="QLabel" name="labelSort_2">
+       <property name="text">
+        <string>Sắp xếp theo</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBoxStandarSort">
+       <item>
+        <property name="text">
+         <string>Mã số sinh viên</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Tên</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Điểm</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1205</width>
+     <width>1264</width>
      <height>25</height>
     </rect>
    </property>

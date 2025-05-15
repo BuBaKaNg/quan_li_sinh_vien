@@ -40,12 +40,27 @@ private slots:
 
     void handleBubbleSort();
 
+    void handleInsertionSort();
+
+    void handleSelectionSort();
 
     void on_sortBtn_clicked();
 
     void on_caculateBtn_clicked();
 
     void on_comboBoxSort_currentIndexChanged(int index);
+
+    void on_listMinBtn_clicked();
+
+    void on_listMaxBtn_clicked();
+
+    void on_huyMaxBtn_clicked();
+
+    void on_huyMinBtn_clicked();
+
+    void on_comboBoxStandarSort_currentIndexChanged(int index);
+
+    void on_searchBtn_clicked();
 
 private:
     Ui::MainWindow *ui;

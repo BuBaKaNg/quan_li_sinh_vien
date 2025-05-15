@@ -55,7 +55,7 @@ public:
     QHBoxLayout *horizontalLayout_4;
     QLineEdit *lineEdit;
     QPushButton *searchBtn;
-    QPushButton *pushButton_3;
+    QPushButton *huySearchBtn;
     QPushButton *caculateBtn;
     QWidget *horizontalLayoutWidget_6;
     QHBoxLayout *horizontalLayout_3;
@@ -74,11 +74,15 @@ public:
     QWidget *horizontalLayoutWidget_10;
     QHBoxLayout *horizontalLayout_7;
     QPushButton *listMinBtn;
-    QPushButton *pushButton;
+    QPushButton *huyMinBtn;
     QWidget *horizontalLayoutWidget_11;
     QHBoxLayout *horizontalLayout_8;
     QPushButton *listMaxBtn;
-    QPushButton *pushButton_2;
+    QPushButton *huyMaxBtn;
+    QWidget *horizontalLayoutWidget_12;
+    QHBoxLayout *horizontalLayout_9;
+    QLabel *labelSort_2;
+    QComboBox *comboBoxStandarSort;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -86,7 +90,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(1205, 657);
+        MainWindow->resize(1264, 657);
         MainWindow->setUnifiedTitleAndToolBarOnMac(false);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
@@ -215,11 +219,11 @@ public:
 
         horizontalLayout_4->addWidget(searchBtn);
 
-        pushButton_3 = new QPushButton(horizontalLayoutWidget_7);
-        pushButton_3->setObjectName("pushButton_3");
-        pushButton_3->setEnabled(false);
+        huySearchBtn = new QPushButton(horizontalLayoutWidget_7);
+        huySearchBtn->setObjectName("huySearchBtn");
+        huySearchBtn->setEnabled(false);
 
-        horizontalLayout_4->addWidget(pushButton_3);
+        horizontalLayout_4->addWidget(huySearchBtn);
 
         caculateBtn = new QPushButton(centralwidget);
         caculateBtn->setObjectName("caculateBtn");
@@ -242,7 +246,7 @@ public:
 
         horizontalLayoutWidget_8 = new QWidget(centralwidget);
         horizontalLayoutWidget_8->setObjectName("horizontalLayoutWidget_8");
-        horizontalLayoutWidget_8->setGeometry(QRect(780, 130, 218, 31));
+        horizontalLayoutWidget_8->setGeometry(QRect(780, 130, 222, 31));
         horizontalLayout_5 = new QHBoxLayout(horizontalLayoutWidget_8);
         horizontalLayout_5->setObjectName("horizontalLayout_5");
         horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
@@ -300,11 +304,11 @@ public:
 
         horizontalLayout_7->addWidget(listMinBtn);
 
-        pushButton = new QPushButton(horizontalLayoutWidget_10);
-        pushButton->setObjectName("pushButton");
-        pushButton->setEnabled(false);
+        huyMinBtn = new QPushButton(horizontalLayoutWidget_10);
+        huyMinBtn->setObjectName("huyMinBtn");
+        huyMinBtn->setEnabled(false);
 
-        horizontalLayout_7->addWidget(pushButton);
+        horizontalLayout_7->addWidget(huyMinBtn);
 
         horizontalLayoutWidget_11 = new QWidget(centralwidget);
         horizontalLayoutWidget_11->setObjectName("horizontalLayoutWidget_11");
@@ -317,16 +321,35 @@ public:
 
         horizontalLayout_8->addWidget(listMaxBtn);
 
-        pushButton_2 = new QPushButton(horizontalLayoutWidget_11);
-        pushButton_2->setObjectName("pushButton_2");
-        pushButton_2->setEnabled(false);
+        huyMaxBtn = new QPushButton(horizontalLayoutWidget_11);
+        huyMaxBtn->setObjectName("huyMaxBtn");
+        huyMaxBtn->setEnabled(false);
 
-        horizontalLayout_8->addWidget(pushButton_2);
+        horizontalLayout_8->addWidget(huyMaxBtn);
+
+        horizontalLayoutWidget_12 = new QWidget(centralwidget);
+        horizontalLayoutWidget_12->setObjectName("horizontalLayoutWidget_12");
+        horizontalLayoutWidget_12->setGeometry(QRect(1010, 130, 218, 31));
+        horizontalLayout_9 = new QHBoxLayout(horizontalLayoutWidget_12);
+        horizontalLayout_9->setObjectName("horizontalLayout_9");
+        horizontalLayout_9->setContentsMargins(0, 0, 0, 0);
+        labelSort_2 = new QLabel(horizontalLayoutWidget_12);
+        labelSort_2->setObjectName("labelSort_2");
+
+        horizontalLayout_9->addWidget(labelSort_2);
+
+        comboBoxStandarSort = new QComboBox(horizontalLayoutWidget_12);
+        comboBoxStandarSort->addItem(QString());
+        comboBoxStandarSort->addItem(QString());
+        comboBoxStandarSort->addItem(QString());
+        comboBoxStandarSort->setObjectName("comboBoxStandarSort");
+
+        horizontalLayout_9->addWidget(comboBoxStandarSort);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1205, 25));
+        menubar->setGeometry(QRect(0, 0, 1264, 25));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
@@ -367,11 +390,11 @@ public:
         timeSearch->setText(QCoreApplication::translate("MainWindow", "Th\341\273\235i gian t\303\254m ki\341\272\277m:", nullptr));
         timeSearchView->setText(QString());
         searchBtn->setText(QCoreApplication::translate("MainWindow", "T\303\254m ki\341\272\277m", nullptr));
-        pushButton_3->setText(QCoreApplication::translate("MainWindow", "H\341\273\247y", nullptr));
+        huySearchBtn->setText(QCoreApplication::translate("MainWindow", "H\341\273\247y", nullptr));
         caculateBtn->setText(QCoreApplication::translate("MainWindow", "T\303\255nh", nullptr));
         lableAverage->setText(QCoreApplication::translate("MainWindow", "\304\220i\341\273\203m trung b\303\254nh :", nullptr));
         lableAverageView->setText(QString());
-        labelSort->setText(QCoreApplication::translate("MainWindow", "S\341\272\257p x\341\272\277p theo", nullptr));
+        labelSort->setText(QCoreApplication::translate("MainWindow", "S\341\272\257p x\341\272\277p b\341\272\261ng", nullptr));
         comboBoxSort->setItemText(0, QCoreApplication::translate("MainWindow", "--- Select ---", nullptr));
         comboBoxSort->setItemText(1, QCoreApplication::translate("MainWindow", "Bubble sort", nullptr));
         comboBoxSort->setItemText(2, QCoreApplication::translate("MainWindow", "Insertion sort", nullptr));
@@ -387,11 +410,16 @@ public:
         comboBoxSearch->setItemText(4, QCoreApplication::translate("MainWindow", "\304\220i\341\273\203m", nullptr));
 
         lableStatus->setText(QCoreApplication::translate("MainWindow", "Tr\341\272\241ng th\303\241i:", nullptr));
-        lableStatusView->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        lableStatusView->setText(QString());
         listMinBtn->setText(QCoreApplication::translate("MainWindow", "Li\341\273\207t k\303\252 c\303\241c sinh vi\303\252n \304\221i\341\273\203m th\341\272\245p nh\341\272\245t", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "H\341\273\247y", nullptr));
+        huyMinBtn->setText(QCoreApplication::translate("MainWindow", "H\341\273\247y", nullptr));
         listMaxBtn->setText(QCoreApplication::translate("MainWindow", "Li\341\273\207t k\303\252 c\303\241c sinh vi\303\252n \304\221i\341\273\203m cao nh\341\272\245t", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("MainWindow", "H\341\273\247y", nullptr));
+        huyMaxBtn->setText(QCoreApplication::translate("MainWindow", "H\341\273\247y", nullptr));
+        labelSort_2->setText(QCoreApplication::translate("MainWindow", "S\341\272\257p x\341\272\277p theo", nullptr));
+        comboBoxStandarSort->setItemText(0, QCoreApplication::translate("MainWindow", "M\303\243 s\341\273\221 sinh vi\303\252n", nullptr));
+        comboBoxStandarSort->setItemText(1, QCoreApplication::translate("MainWindow", "T\303\252n", nullptr));
+        comboBoxStandarSort->setItemText(2, QCoreApplication::translate("MainWindow", "\304\220i\341\273\203m", nullptr));
+
     } // retranslateUi
 
 };
