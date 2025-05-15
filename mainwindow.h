@@ -58,7 +58,6 @@ private slots:
 
     void on_huyMinBtn_clicked();
 
-    void on_comboBoxStandarSort_currentIndexChanged(int index);
 
     void on_searchBtn_clicked();
 
