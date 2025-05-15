@@ -83,6 +83,8 @@ public:
     QHBoxLayout *horizontalLayout_9;
     QLabel *labelSort_2;
     QComboBox *comboBoxStandarSort;
+    QPushButton *addBtn;
+    QPushButton *saveBtn;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -346,6 +348,12 @@ public:
 
         horizontalLayout_9->addWidget(comboBoxStandarSort);
 
+        addBtn = new QPushButton(centralwidget);
+        addBtn->setObjectName("addBtn");
+        addBtn->setGeometry(QRect(590, 519, 101, 31));
+        saveBtn = new QPushButton(centralwidget);
+        saveBtn->setObjectName("saveBtn");
+        saveBtn->setGeometry(QRect(720, 518, 51, 31));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -405,9 +413,9 @@ public:
         lableSearch->setText(QCoreApplication::translate("MainWindow", "T\303\254m ki\341\272\277m theo", nullptr));
         comboBoxSearch->setItemText(0, QCoreApplication::translate("MainWindow", "M\303\243 s\341\273\221 sinh vi\303\252n", nullptr));
         comboBoxSearch->setItemText(1, QCoreApplication::translate("MainWindow", "T\303\252n", nullptr));
-        comboBoxSearch->setItemText(2, QCoreApplication::translate("MainWindow", "H\341\273\215", nullptr));
-        comboBoxSearch->setItemText(3, QCoreApplication::translate("MainWindow", "L\341\273\233p", nullptr));
-        comboBoxSearch->setItemText(4, QCoreApplication::translate("MainWindow", "\304\220i\341\273\203m", nullptr));
+        comboBoxSearch->setItemText(2, QCoreApplication::translate("MainWindow", "\304\220i\341\273\203m", nullptr));
+        comboBoxSearch->setItemText(3, QCoreApplication::translate("MainWindow", "H\341\273\215", nullptr));
+        comboBoxSearch->setItemText(4, QCoreApplication::translate("MainWindow", "L\341\273\233p", nullptr));
 
         lableStatus->setText(QCoreApplication::translate("MainWindow", "Tr\341\272\241ng th\303\241i:", nullptr));
         lableStatusView->setText(QString());
@@ -420,6 +428,8 @@ public:
         comboBoxStandarSort->setItemText(1, QCoreApplication::translate("MainWindow", "T\303\252n", nullptr));
         comboBoxStandarSort->setItemText(2, QCoreApplication::translate("MainWindow", "\304\220i\341\273\203m", nullptr));
 
+        addBtn->setText(QCoreApplication::translate("MainWindow", "Th\303\252m sinh vi\303\252n", nullptr));
+        saveBtn->setText(QCoreApplication::translate("MainWindow", "L\306\260u", nullptr));
     } // retranslateUi
 
 };

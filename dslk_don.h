@@ -33,6 +33,7 @@ public:
     node* them_sv(SinhVien &sv); // Trả về node vừa thêm, hoặc trả về null nếu thêm thất bại
     node* sua_sv(QString &mssv, SinhVien &sv);
     bool xoa_sv(QString &mssv); // Trả về true nếu xóa thành công và false nếu thất bại
+    void clear();
     // void quick_sort(); // Chỉ áp dụng mảng hoặc dslk kép
     // void heap_sort(); // Chỉ áp dụng mảng hoặc dslk kép
     void merge_sort(bool(*cmp)(node &a, node &b));

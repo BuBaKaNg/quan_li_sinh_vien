@@ -36,7 +36,7 @@ private slots:
 
     void initDs();
 
-    void initData();
+    bool initData();
 
     void handleBubbleSort();
 
@@ -61,6 +61,14 @@ private slots:
     void on_comboBoxStandarSort_currentIndexChanged(int index);
 
     void on_searchBtn_clicked();
+
+    void on_huySearchBtn_clicked();
+private:
+    template<typename ListType>
+    void handleTimKiem(ListType &list);
+    void resert();
+
+
 
 private:
     Ui::MainWindow *ui;

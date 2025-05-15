@@ -191,15 +191,88 @@ public:
                 return cmp_bang_ten;
             case 2:
                 return cmp_bang_diem;
-            case 3:
-                return cmp_bang_ho;
-            case 4:
-                return cmp_bang_lop;
+
         }
     }
 
-    NodeType* tim_kiem_linear(NodeType* first, bool isVong = false, bool(*cmp)(NodeType* a, NodeType* b) = cmp_bang_mssv){
 
+
+    QList<int> tim_kiem_theo_ma(NodeType* first, QString mssv, bool isVong = false){
+        NodeType* temp = first;
+        int cnt = 0;
+        QList<int> searched;
+        if(!first) return {};
+        do{
+            if(temp->sv.getMssv() == mssv){
+                searched.append(cnt);
+            }
+            qDebug() << temp->sv.getMssv() << " " << mssv;
+            cnt++;
+            temp = temp->next;
+        }while(temp != nullptr);
+        return searched;
+    }
+
+    QList<int> tim_kiem_theo_ten(NodeType* first, QString ten, bool isVong = false){
+        NodeType* temp = first;
+        int cnt = 0;
+        QList<int> searched;
+        if(!first) return {};
+        do{
+            if(temp->sv.getTen() == ten){
+                searched.append(cnt);
+            }
+            cnt++;
+            temp = temp->next;
+        }while(temp != nullptr);
+        return searched;
+    }
+
+    QList<int> tim_kiem_theo_ho(NodeType* first, QString ho, bool isVong = false){
+        NodeType* temp = first;
+        int cnt = 0;
+        QList<int> searched;
+        if(!first) return {};
+        do{
+            if(temp->sv.getHo() == ho){
+                searched.append(cnt);
+            }
+            cnt++;
+            temp = temp->next;
+        }while(temp != nullptr);
+        return searched;
+    }
+
+    QList<int> tim_kiem_theo_diem(NodeType* first, qreal diem, bool isVong = false){
+        NodeType* temp = first;
+        int cnt = 0;
+        QList<int> searched;
+        if(!first) return {};
+        do{
+            if(temp->sv.getDiem() == diem){
+                searched.append(cnt);
+
+            }
+            cnt++;
+            temp = temp->next;
+        }while(temp != nullptr);
+        return searched;
+    }
+
+
+    QList<int> tim_kiem_theo_lop(NodeType* first, QString lop, bool isVong = false){
+        NodeType* temp = first;
+        int cnt = 0;
+        QList<int> searched;
+        if(!first) return {};
+        do{
+            if(temp->sv.getLop() == lop){
+                searched.append(cnt);
+            }
+            cnt++;
+            temp = temp->next;
+        }while(temp != nullptr);
+        return searched;
     }
 };
 

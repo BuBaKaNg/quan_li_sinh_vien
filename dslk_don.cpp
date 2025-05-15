@@ -78,6 +78,15 @@ bool dslk_don::xoa_sv(QString &mssv){
     return 0;
 }
 
+void dslk_don::clear() {
+    node* temp = first;
+    while(temp != nullptr){
+        node* p = temp;
+        temp = temp->next;
+        delete p;
+    }
+    first = nullptr;
+}
 
 dslk_don::~dslk_don() {
     // nếu không cần làm gì, để trống cũng được

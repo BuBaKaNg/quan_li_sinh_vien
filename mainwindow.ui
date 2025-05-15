@@ -360,17 +360,17 @@
        </item>
        <item>
         <property name="text">
+         <string>Điểm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Họ</string>
         </property>
        </item>
        <item>
         <property name="text">
          <string>Lớp</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Điểm</string>
         </property>
        </item>
       </widget>
@@ -498,6 +498,32 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QPushButton" name="addBtn">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>519</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Thêm sinh viên</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="saveBtn">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>518</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Lưu</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

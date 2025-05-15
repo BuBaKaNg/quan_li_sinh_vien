@@ -7,6 +7,7 @@
 #include "read_write.h"
 #include "DanhSach.h"
 #include "dslk_don.h"
+#include <QMessageBox>
 // #include "dslk_vong.h"
 // #include "dslk_kep.h"
 using namespace std;
@@ -57,52 +58,57 @@ bool check_data_null(SinhVien x){
     return true;
 }
 
-template <typename ListType>
-void loadDuLieu(QString& filePath, ListType& danhSach) {
-
+template<typename ListType>
+QStringList loadDuLieu(const QString& filePath, ListType& danhSach) {
+    QStringList errors;
     QSet<QString> mssvSet;
     QFile file(filePath);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Không thể mở file:" << file.errorString();
-        return;
+        errors << "Không thể mở file: " + file.errorString();
+        return errors;
     }
+
     QTextStream in(&file);
-    bool check = true;
     int lineNumber = 0;
 
     while (!in.atEnd()) {
         QString line = in.readLine().trimmed();
         lineNumber++;
 
-        if (lineNumber == 1) continue;  // Bỏ dòng tiêu đề
-
+        if (lineNumber == 1) continue; // Bỏ dòng tiêu đề
         if (line.isEmpty()) continue;
 
         SinhVien sv = process_substring(line);
+        bool hasError = false;
 
         if (!check_msv(sv.getMssv())) {
-            qWarning() << "Dòng" << lineNumber << ": Mã sinh viên chứa ký tự trắng!";
-            check = false;
+            errors << QString("Dòng %1: Mã sinh viên chứa ký tự trắng hoặc không hợp lệ!").arg(lineNumber);
+            hasError = true;
         }
 
         if (!check_lop(sv.getLop())) {
-            qWarning() << "Dòng" << lineNumber << ": Lớp chứa ký tự trắng!";
-            check = false;
+            errors << QString("Dòng %1: Lớp chứa ký tự trắng hoặc không hợp lệ!").arg(lineNumber);
+            hasError = true;
         }
 
         if (!check_data_null(sv)) {
-            qWarning() << "Dòng" << lineNumber << ": Thiếu thông tin bắt buộc!";
-            check = false;
+            errors << QString("Dòng %1: Thiếu thông tin bắt buộc!").arg(lineNumber);
+            hasError = true;
         }
 
         if (mssvSet.contains(sv.getMssv())) {
-            qWarning() << "Dòng" << lineNumber << ": Trùng mã sinh viên:" << sv.getMssv();
-            check = false;
+            errors << QString("Dòng %1: Trùng mã sinh viên: %2").arg(lineNumber).arg(sv.getMssv());
+            hasError = true;
         }
 
-        mssvSet.insert(sv.getMssv());
-        danhSach.them_sv(sv);
+        if (!hasError) {
+            mssvSet.insert(sv.getMssv());
+            danhSach.them_sv(sv);
+        }
+
     }
 
+    return errors;
 }
+

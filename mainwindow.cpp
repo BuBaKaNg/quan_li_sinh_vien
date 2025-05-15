@@ -61,8 +61,24 @@ void MainWindow::initDs() {
     }
 }
 
-void MainWindow::initData() {
-    loadDuLieu(path, ds_don);
+bool MainWindow::initData() {
+
+    QStringList errors = loadDuLieu(path, ds_don);
+
+    if (!errors.isEmpty()) {
+        QString errorText = "Đã xảy ra lỗi trong quá trình import:\n\n" + errors.join("\n");
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Lỗi Import Dữ Liệu");
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setText("Import thất bại do dữ liệu không hợp lệ.");
+        msgBox.setDetailedText(errorText);  // Mở rộng để xem chi tiết
+        msgBox.exec();
+        return false;
+    } else {
+        QMessageBox::information(this, "Thành công", "Import dữ liệu thành công!");
+        return true;
+    }
 }
 
 template <typename ListType>
@@ -86,6 +102,9 @@ void loadToTable(ListType& ds, QTableWidget* tableWidget) {
 
         ++row;
     }
+
+
+    qDebug() << 1;
 }
 
 void MainWindow::on_downloadBtn_clicked()
@@ -95,10 +114,14 @@ void MainWindow::on_downloadBtn_clicked()
         QMessageBox::information(this, "Thông tin", "Bạn chưa chọn file hoặc chọn cách lưu trữ");
     }
     initDs();
-    initData();
-    QMessageBox::information(this, "Thông báo", "Bạn đã import thành công");
-    loadToTable(ds_don, ui->tableWidget);
-    isImport = true;
+    bool checkData = initData();
+    if(checkData){
+        loadToTable(ds_don, ui->tableWidget);
+        isImport = true;
+    }
+    else {
+        ds_don.clear();
+    }
 }
 
 
@@ -202,6 +225,11 @@ void MainWindow::handleSelectionSort(){
 
 void MainWindow::on_sortBtn_clicked()
 {
+    if(!isImport){
+        QMessageBox::critical(this, "Lỗi", "Vui lòng import trước khi sắp xếp");
+        return;
+    }
+
     switch(sortIndex) {
     case 0:
         QMessageBox::critical(this, "Lỗi", "Vui lòng chọn phương thức sort");
@@ -259,6 +287,10 @@ void MainWindow::on_comboBoxSort_currentIndexChanged(int index)
 
 void MainWindow::on_listMinBtn_clicked()
 {
+    if(!isImport){
+        QMessageBox::critical(this, "Lỗi", "Vui lòng chọn chức năng này");
+        return;
+    }
     switch (selectedIndex){
     case 1:
         break;
@@ -276,11 +308,17 @@ void MainWindow::on_listMinBtn_clicked()
     default:
         break;
     }
+    resert();
 }
 
 
 void MainWindow::on_listMaxBtn_clicked()
 {
+    if(!isImport){
+        QMessageBox::critical(this, "Lỗi", "Vui lòng chọn chức năng này");
+        return;
+    }
+
     switch (selectedIndex){
     case 1:
         break;
@@ -303,70 +341,233 @@ void MainWindow::on_listMaxBtn_clicked()
 
 void MainWindow::on_huyMaxBtn_clicked()
 {
-    switch (selectedIndex){
-    case 1:
-        break;
-    case 2: {
+    resert();
         loadToTable(ds_don, ui->tableWidget);
-        break;
-    }
-    case 3:
-        break;
-    case 4:
-        break;
-    default:
-        break;
-    }
-    ui->huyMaxBtn->setEnabled(false);
+
 }
 
 
 void MainWindow::on_huyMinBtn_clicked()
 {
-    switch (selectedIndex){
-    case 1:
-        break;
-    case 2: {
-        loadToTable(ds_don, ui->tableWidget);
+    resert();
+    loadToTable(ds_don, ui->tableWidget);
+
+}
+
+template<typename ListType>
+void MainWindow::handleTimKiem(ListType &list) {
+    int index = ui->comboBoxSearch->currentIndex();
+    switch(index){
+    case 0:{
+        Helper<typename ListType::node, ListType> helper;
+        QString input = ui->lineEdit->text();
+        QElapsedTimer timer;
+        timer.start();  // Bắt đầu đếm thời gian
+        QList<int> indexes = helper.tim_kiem_theo_ma(list.getFirst(),input);
+        qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
+        QString result;
+        result = QString::number(nanos / 1'000'000.0, 'f', 3) + " ms";
+        ui->timeSearchView->setText(result);
+        int colums = ui->tableWidget->columnCount();
+        int rows = ui->tableWidget->rowCount();
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < colums; j++){
+                QTableWidgetItem* item = ui->tableWidget->item(i, j);
+                if (item) {
+                    item->setBackground(QBrush());  // Hoặc QColor("#ffeecc")
+                    item->setForeground(QBrush());   // Màu chữ
+                }
+            }
+        }
+        for(auto x : indexes){
+            int columnCount = ui->tableWidget->columnCount();
+            for(int i = 0; i < columnCount; i++){
+                QTableWidgetItem* item = ui->tableWidget->item(x, i);
+                if (item) {
+                    item->setBackground(Qt::red);  // Hoặc QColor("#ffeecc")
+                    item->setForeground(Qt::black);   // Màu chữ
+                }
+            }
+        }
 
         break;
     }
-    case 3:
+
+    case 1:{
+        Helper<typename ListType::node, ListType> helper;
+        QString input = ui->lineEdit->text();
+        QElapsedTimer timer;
+        timer.start();  // Bắt đầu đếm thời gian
+        QList<int> indexes = helper.tim_kiem_theo_ten(list.getFirst(),input);
+        qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
+        QString result;
+        result = QString::number(nanos / 1'000'000.0, 'f', 3) + " ms";
+        ui->timeSearchView->setText(result);
+        int colums = ui->tableWidget->columnCount();
+        int rows = ui->tableWidget->rowCount();
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < colums; j++){
+                QTableWidgetItem* item = ui->tableWidget->item(i, j);
+                if (item) {
+                    item->setBackground(QBrush());  // Hoặc QColor("#ffeecc")
+                    item->setForeground(QBrush());   // Màu chữ
+                }
+            }
+        }
+        for(auto x : indexes){
+            int columnCount = ui->tableWidget->columnCount();
+            for(int i = 0; i < columnCount; i++){
+                QTableWidgetItem* item = ui->tableWidget->item(x, i);
+                if (item) {
+                    item->setBackground(Qt::red);  // Hoặc QColor("#ffeecc")
+                    item->setForeground(Qt::black);   // Màu chữ
+                }
+            }
+        }
         break;
+    }
+    case 2: {
+        Helper<typename ListType::node, ListType> helper;
+        QString text = ui->lineEdit->text();
+        double input = text.toDouble();
+        QElapsedTimer timer;
+        timer.start();  // Bắt đầu đếm thời gian
+        QList<int> indexes = helper.tim_kiem_theo_diem(list.getFirst(),input);
+        qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
+        QString result;
+        result = QString::number(nanos / 1'000'000.0, 'f', 3) + " ms";
+        ui->timeSearchView->setText(result);
+        int colums = ui->tableWidget->columnCount();
+        int rows = ui->tableWidget->rowCount();
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < colums; j++){
+                QTableWidgetItem* item = ui->tableWidget->item(i, j);
+                if (item) {
+                    item->setBackground(QBrush());  // Hoặc QColor("#ffeecc")
+                    item->setForeground(QBrush());   // Màu chữ
+                }
+            }
+        }
+        for(auto x : indexes){
+            int columnCount = ui->tableWidget->columnCount();
+            for(int i = 0; i < columnCount; i++){
+                QTableWidgetItem* item = ui->tableWidget->item(x, i);
+                if (item) {
+                    item->setBackground(Qt::yellow);  // Hoặc QColor("#ffeecc")
+                    item->setForeground(Qt::black);   // Màu chữ
+                }
+                item->setBackground(Qt::yellow);  // Hoặc QColor("#ffeecc")
+                item->setForeground(Qt::black);   // Màu chữ
+            }
+        }
+        break;
+    }
+    case 3:{
+        Helper<typename ListType::node, ListType> helper;
+        QString input = ui->lineEdit->text();
+        QElapsedTimer timer;
+        timer.start();  // Bắt đầu đếm thời gian
+        QList<int> indexes = helper.tim_kiem_theo_ho(list.getFirst(),input);
+        qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
+        QString result;
+        result = QString::number(nanos / 1'000'000.0, 'f', 3) + " ms";
+        ui->timeSearchView->setText(result);
+        int colums = ui->tableWidget->columnCount();
+        int rows = ui->tableWidget->rowCount();
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < colums; j++){
+                QTableWidgetItem* item = ui->tableWidget->item(i, j);
+                if (item) {
+                    item->setBackground(QBrush());  // Hoặc QColor("#ffeecc")
+                    item->setForeground(QBrush());   // Màu chữ
+                }
+            }
+        }
+        for(auto x : indexes){
+            int columnCount = ui->tableWidget->columnCount();
+            for(int i = 0; i < columnCount; i++){
+                QTableWidgetItem* item = ui->tableWidget->item(x, i);
+                if (item) {
+                    item->setBackground(Qt::red);  // Hoặc QColor("#ffeecc")
+                    item->setForeground(Qt::black);   // Màu chữ
+                }
+            }
+        }
+        break;
+    }
     case 4:
+    {
+        Helper<typename ListType::node, ListType> helper;
+        QString input = ui->lineEdit->text();
+        QElapsedTimer timer;
+        timer.start();  // Bắt đầu đếm thời gian
+        QList<int> indexes = helper.tim_kiem_theo_lop(list.getFirst(),input);
+        qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
+        QString result;
+        result = QString::number(nanos / 1'000'000.0, 'f', 3) + " ms";
+        ui->timeSearchView->setText(result);
+        int colums = ui->tableWidget->columnCount();
+        int rows = ui->tableWidget->rowCount();
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < colums; j++){
+                QTableWidgetItem* item = ui->tableWidget->item(i, j);
+                if (item) {
+                    item->setBackground(QBrush());  // Hoặc QColor("#ffeecc")
+                    item->setForeground(QBrush());   // Màu chữ
+                }
+            }
+        }
+        for(auto x : indexes){
+            int columnCount = ui->tableWidget->columnCount();
+            for(int i = 0; i < columnCount; i++){
+                QTableWidgetItem* item = ui->tableWidget->item(x, i);
+                if (item) {
+                    item->setBackground(Qt::red);  // Hoặc QColor("#ffeecc")
+                    item->setForeground(Qt::black);   // Màu chữ
+                }
+            }
+        }
         break;
+    }
     default:
         break;
     }
-    ui->huyMinBtn->setEnabled(false);
 }
-
-
-void MainWindow::on_comboBoxStandarSort_currentIndexChanged(int index)
-{
-
-}
-
-
 
 
 void MainWindow::on_searchBtn_clicked()
 {
-    QString input = ui->comboBoxSearch->currentText();
-    int index = ui->comboBoxSearch->currentIndex();
+    if(!isImport){
+        QMessageBox::critical(this, "Lỗi", "Vui lòng import trước khi tìm kiếm");
+        return;
+    }
     switch(selectedIndex){
         case 0:
         break;
         case 1:
             break;
         case 2: {
-            Helper<dslk_don::node, dslk_don> helper;
-            auto cmp = helper.getCmp(index);
-                break;
+            handleTimKiem(ds_don);
+            break;
         }
         case 3:
             break;
+        default:
+            break;
     }
+    ui->huySearchBtn->setEnabled(true);
+}
 
+void MainWindow::resert() {
+    ui->huyMaxBtn->setEnabled(false);
+    ui->huyMinBtn->setEnabled(false);
+    ui->huySearchBtn->setEnabled(false);
+
+}
+
+void MainWindow::on_huySearchBtn_clicked()
+{
+    loadToTable(ds_don, ui->tableWidget);
+    resert();
 }
 
