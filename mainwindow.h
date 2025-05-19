@@ -4,9 +4,10 @@
 
 #include <QList>
 #include <QMainWindow>
-#include "DanhSach.h"
 #include "dslk_don.h"
-#include "helper.h"
+#include "dslk_vong.h"
+#include "mang.h"
+#include "dslk_kep.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -62,17 +63,33 @@ private slots:
     void on_searchBtn_clicked();
 
     void on_huySearchBtn_clicked();
+    void on_addBtn_clicked();
+
+    void showTableContextMenu(const QPoint &pos);
+
+    void on_saveBtn_clicked();
+
 private:
     template<typename ListType>
     void handleTimKiem(ListType &list);
+    void handleMergeSort();
     void resert();
-
-
-
-private:
+    void handleQuickSort();
+    void handleTimKiemArr(mang &ds);
+    void handleTimKiemVong();
+    void handleXoaSv(QString &mssv);
+    void handleTimKiemKep();
+    void handleHeapSort();
+public:
+    void updateTable();
+public:
     Ui::MainWindow *ui;
     dslk_don ds_don;
     // dslk_kep ds_kep;
-    // dslk_vong ds_vong;
+    dslk_vong ds_vong;
+    dslk_kep ds_kep;
+    mang ds_mang;
+    QSet<QString> mssvSet;
+    int searchMode = -1;
 };
 #endif // MAINWINDOW_H

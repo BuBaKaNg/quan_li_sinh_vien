@@ -1,5 +1,5 @@
 #define PROPERTY(type , name, funcName) \
-private: \
+public: \
     type name; \
     public: \
     type& get##funcName() { return name; } \

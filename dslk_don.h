@@ -4,23 +4,17 @@
 #include "DanhSach.h"
 #include <QList>
 #include "getter_setter_auto.cpp"
-struct nodeDSLKD : public BaseNode {
-    SinhVien sv;
-    nodeDSLKD* next;
-    ~nodeDSLKD(){};
-};
-
 
 
 class dslk_don
 {
 public:
-    struct node : public BaseNode {
+    struct node : public BaseNode{
         SinhVien sv;
         node* next;
     };
 
-PROPERTY(node*, first, First);
+    PROPERTY(node*, first, First);
 
 public:
     dslk_don();

@@ -20,3 +20,12 @@ void SinhVien::in_thong_tin() {
     qDebug() << "Điểm:" << diem;
 }
 
+QString SinhVien::ten_dao_nguoc(){
+    QString temp = ho + " " + ten;
+    QString result = "";
+    int n = temp.length();
+    for(int i = n - 1; i >= 0; i--){
+        result += temp[i];
+    }
+    return result;
+}

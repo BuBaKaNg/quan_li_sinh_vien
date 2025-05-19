@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>addUi</class>
+ <widget class="QWidget" name="addUi">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>829</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="formLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>231</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="labelMssv">
+      <property name="text">
+       <string>MSSV</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="labelHo">
+      <property name="text">
+       <string>Họ</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="labelTen">
+      <property name="text">
+       <string>Tên</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="labelLop">
+      <property name="text">
+       <string>Lớp</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="labelDiem">
+      <property name="text">
+       <string>Điểm</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEditMssv"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEditHo"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEditTen"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEditLop"/>
+    </item>
+    <item row="5" column="1">
+     <widget class="QPushButton" name="pushButtonAdd">
+      <property name="text">
+       <string>Thêm</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QDoubleSpinBox" name="doubleSpinBoxDiem"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>20</y>
+     <width>471</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>Mssv</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Họ</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Tên</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Lớp</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Điểm</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QPushButton" name="pushButtonSave">
+   <property name="geometry">
+    <rect>
+     <x>620</x>
+     <y>260</y>
+     <width>83</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Lưu</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonCancel">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>260</y>
+     <width>83</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Hủy</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

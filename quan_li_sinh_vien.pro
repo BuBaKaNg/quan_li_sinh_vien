@@ -10,6 +10,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    addui.cpp \
     cmp.cpp \
     getter_setter_auto.cpp \
     helper.cpp \
@@ -18,23 +19,30 @@ SOURCES += \
     dslk_kep.cpp \
     dslk_vong.cpp \
     mainwindow.cpp \
+    mang.cpp \
     read_write.cpp \
-    sinhvien.cpp
+    sinhvien.cpp \
+    updateui.cpp
 
 
 HEADERS += \
     DanhSach.h \
+    addui.h \
     helper.h \
     dslk_don.h \
     dslk_kep.h \
     dslk_vong.h \
     mainwindow.h \
+    mang.h \
     read_write.h \
-    sinhvien.h
+    sinhvien.h \
+    updateui.h
 
 FORMS += \
+    addui.ui \
     form.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    updateui.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

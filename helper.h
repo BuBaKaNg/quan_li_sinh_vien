@@ -23,7 +23,7 @@ public:
         } while (p != nullptr && (!isVong || p != first));
     }
 
-    qreal tinh_tb(NodeType* first, bool isVong = false) {
+    qreal tinh_tb(NodeType* first, QString &lop , bool isVong = false) {
         if (!first) return -1.0;
 
         NodeType* p = first;
@@ -31,8 +31,10 @@ public:
         int dem = 0;
 
         do {
-            tong += p->sv.getDiem();  // hoặc p->sv.diem nếu bạn dùng public field
-            ++dem;
+            if(p->sv.lop == lop){
+                tong += p->sv.diem;
+                dem++;
+            }
             p = p->next;
         } while (p != nullptr && (!isVong || p != first));
 
@@ -77,9 +79,8 @@ public:
         return ans;
     }
 
-    void buble_sort(NodeType *first, bool isVong = false, bool(*cmp)(NodeType* a, NodeType *b) = cmp_bang_mssv) {
+    void buble_sort(NodeType* &first, bool isVong = false, bool(*cmp)(NodeType* a, NodeType *b) = cmp_bang_mssv) {
         if (!first || !first->next) return; // danh sách rỗng hoặc chỉ 1 phần tử
-
         bool swapped;
         do {
             swapped = false;
@@ -101,19 +102,19 @@ public:
 
     }
 
-    void selection_sort(NodeType* first, bool isVong = false, bool(*cmp)(NodeType* a, NodeType* b) = cmp_bang_mssv) {
+    void selection_sort(NodeType* &first, bool isVong = false, bool(*cmp)(NodeType* a, NodeType* b) = cmp_bang_mssv) {
         if (!first || !first->next) return;
 
         NodeType* start = first;
         bool done = false;
 
         NodeType* i = first;
-        while (i && !(isVong && done)) {
+        while (i != nullptr && (!isVong || !done)) {
             NodeType* minNode = i;
             NodeType* j = i->next;
 
             // Với danh sách vòng, dừng khi quay lại đầu
-            while (j && (!isVong || j != start)) {
+            while (j != nullptr && (!isVong || j != start)) {
                 if (cmp(j, minNode)) {
                     minNode = j;
                 }
@@ -132,7 +133,7 @@ public:
         }
     }
 
-    NodeType* sortedInsert(NodeType* sorted, NodeType* newNode, bool(*cmp)(NodeType* a, NodeType* b) = cmp_bang_mssv) {
+    NodeType* sortedInsert(NodeType* &sorted, NodeType* newNode, bool(*cmp)(NodeType* a, NodeType* b) = cmp_bang_mssv) {
         if (sorted == nullptr || cmp(newNode, sorted)) {
             newNode->next = sorted;
             return newNode;
@@ -152,32 +153,30 @@ public:
     void insertion_sort(NodeType* &first, bool isVong = false, bool(*cmp)(NodeType* a, NodeType* b) = cmp_bang_mssv) {
         if (!first || !first->next) return;
 
-        // Nếu là danh sách vòng: ngắt vòng trước
-        if (isVong) {
-            NodeType* tail = first;
-            while (tail->next != first) {
-                tail = tail->next;
-            }
-            tail->next = nullptr; // Ngắt vòng
-        }
-
         NodeType* sorted = nullptr;
         NodeType* current = first;
-
+        if(isVong){
+            NodeType* tail = first;
+            while(tail->next != first){
+                tail = tail->next;
+            }
+            tail->next = nullptr;
+        }
         while (current != nullptr) {
+            qDebug() << "đang xử lí";
+            current->sv.in_thong_tin();
             NodeType* next = current->next;
             current->next = nullptr;
             sorted = sortedInsert(sorted, current, cmp);
             current = next;
         }
 
-        // Khôi phục danh sách vòng nếu cần
-        if (isVong && sorted) {
+        if(isVong){
             NodeType* tail = sorted;
-            while (tail->next) {
+            while(tail->next != nullptr){
                 tail = tail->next;
             }
-            tail->next = sorted;  // Nối lại vòng
+            tail->next = sorted;
         }
 
         first = sorted; // Cập nhật lại con trỏ đầu
@@ -209,7 +208,7 @@ public:
             qDebug() << temp->sv.getMssv() << " " << mssv;
             cnt++;
             temp = temp->next;
-        }while(temp != nullptr);
+        }while(temp != nullptr && (!isVong || temp != first));
         return searched;
     }
 
@@ -224,7 +223,7 @@ public:
             }
             cnt++;
             temp = temp->next;
-        }while(temp != nullptr);
+        }while(temp != nullptr && (!isVong || temp != first));
         return searched;
     }
 
@@ -239,7 +238,7 @@ public:
             }
             cnt++;
             temp = temp->next;
-        }while(temp != nullptr);
+        }while(temp != nullptr && (!isVong || temp != first));
         return searched;
     }
 
@@ -255,7 +254,7 @@ public:
             }
             cnt++;
             temp = temp->next;
-        }while(temp != nullptr);
+        }while(temp != nullptr && (!isVong || temp != first));
         return searched;
     }
 
@@ -271,8 +270,98 @@ public:
             }
             cnt++;
             temp = temp->next;
-        }while(temp != nullptr);
+        }while(temp != nullptr && (!isVong || temp != first));
         return searched;
+    }
+
+    NodeType* merge(NodeType* a, NodeType* b, bool(*cmp)(NodeType* a, NodeType* b)) {
+        if (!a) return b;
+        if (!b) return a;
+
+        NodeType* result = nullptr;
+
+        if (cmp(a, b)) {
+            result = a;
+            result->next = merge(a->next, b, cmp);
+        } else {
+            result = b;
+            result->next = merge(a, b->next, cmp);
+        }
+
+        return result;
+    }
+
+    void split(NodeType* source, NodeType** frontRef, NodeType** backRef) {
+        NodeType* slow = source;
+        NodeType* fast = source->next;
+
+        while (fast && fast->next) {
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+
+        *frontRef = source;
+        *backRef = slow->next;
+        slow->next = nullptr;
+    }
+
+
+
+
+    void noiVong(NodeType* head){
+        NodeType* tail = head;
+        while (tail->next)
+            tail = tail->next;
+        tail->next = head;  // tạo vòng lại
+    }
+
+    void splitVong(NodeType* source, NodeType** frontRef, NodeType** backRef) {
+        NodeType* slow = source;
+        NodeType* fast = source->next;
+
+        while (fast != source && fast->next != source) {
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+
+        *frontRef = source;
+        *backRef = slow->next;
+        slow->next = *frontRef;     // Kết thúc danh sách trước
+        NodeType* temp = *backRef;
+        while (temp->next != source) {
+            temp = temp->next;
+        }
+        temp->next = *backRef;      // Kết thúc danh sách sau
+    }
+
+    void mergeSort(NodeType** headRef, bool(*cmp)(NodeType* a, NodeType* b)) {
+        NodeType* head = *headRef;
+        if (!head || !head->next) return;
+
+        NodeType *a, *b;
+        split(head, &a, &b);
+        mergeSort(&a, cmp);
+        mergeSort(&b, cmp);
+
+        *headRef = merge(a, b, cmp);
+    }
+
+    void mergeSortVong_last(NodeType*& last, bool(*cmp)(NodeType* a, NodeType* b)) {
+        if (!last || last->next == last) return;
+
+        NodeType* head = last->next;
+        last->next = nullptr;  // Ngắt vòng
+
+        mergeSort(&head, cmp);
+        // Tìm tail mới
+        NodeType* tail = head;
+        while (tail->next) {
+            tail = tail->next;
+        }
+
+
+        tail->next = head;  // Nối vòng
+        last = tail;        // Cập nhật lại con trỏ last
     }
 };
 

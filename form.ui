@@ -1,113 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QWidget" name="MainWindow">
+ <class>editStudent</class>
+ <widget class="QDialog" name="editStudent">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>670</width>
-    <height>505</height>
+    <width>241</width>
+    <height>195</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Quản lý Sinh viên</string>
+   <string>Sửa Sinh Viên</string>
   </property>
-  <layout class="QVBoxLayout" name="mainLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="importLayout">
-     <item>
-      <widget class="QPushButton" name="btnImportFile">
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_id">
        <property name="text">
-        <string>Nhập tệp</string>
+        <string>Mã sinh viên:</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLabel" name="labelFilePath">
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="lineEdit_id"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_name">
        <property name="text">
-        <string>Chưa chọn tệp</string>
+        <string>Họ tên:</string>
        </property>
       </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineEdit_name"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_class">
+       <property name="text">
+        <string>Lớp:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="lineEdit_class"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_score">
+       <property name="text">
+        <string>Điểm:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="lineEdit_score"/>
      </item>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="storageMethodLayout">
+    <layout class="QHBoxLayout" name="buttonLayout">
      <item>
-      <widget class="QLabel" name="labelStorageMethod">
+      <spacer name="spacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnSave">
        <property name="text">
-        <string>Phương thức lưu trữ:</string>
+        <string>Sửa</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBoxStorageMethod">
-       <item>
-        <property name="text">
-         <string>Mảng</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Danh sách liên kết đơn</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Danh sách liên kết vòng</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="actionLayout">
-     <item>
-      <widget class="QPushButton" name="btnLoadData">
+      <widget class="QPushButton" name="btnCancel">
        <property name="text">
-        <string>Tải dữ liệu</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnExit">
-       <property name="text">
-        <string>Thoát</string>
+        <string>Hủy</string>
        </property>
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QTableWidget" name="tableWidget">
-     <column>
-      <property name="text">
-       <string>MSSV</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Họ</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Tên</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Lớp</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Điểm</string>
-      </property>
-     </column>
-    </widget>
    </item>
   </layout>
  </widget>

@@ -19,6 +19,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QVBoxLayout>
@@ -69,6 +70,9 @@ public:
     QHBoxLayout *horizontalLayout_6;
     QLabel *lableSearch;
     QComboBox *comboBoxSearch;
+    QLabel *label;
+    QRadioButton *radioButtonTenDaoNguoYes;
+    QRadioButton *radioButtonTenDaoNguocNo;
     QLabel *lableStatus;
     QLabel *lableStatusView;
     QWidget *horizontalLayoutWidget_10;
@@ -85,6 +89,7 @@ public:
     QComboBox *comboBoxStandarSort;
     QPushButton *addBtn;
     QPushButton *saveBtn;
+    QComboBox *comboBoxLopTb;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -92,7 +97,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(1264, 657);
+        MainWindow->resize(1307, 657);
         MainWindow->setUnifiedTitleAndToolBarOnMac(false);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
@@ -264,13 +269,14 @@ public:
         comboBoxSort->addItem(QString());
         comboBoxSort->addItem(QString());
         comboBoxSort->addItem(QString());
+        comboBoxSort->addItem(QString());
         comboBoxSort->setObjectName("comboBoxSort");
 
         horizontalLayout_5->addWidget(comboBoxSort);
 
         horizontalLayoutWidget_9 = new QWidget(centralwidget);
         horizontalLayoutWidget_9->setObjectName("horizontalLayoutWidget_9");
-        horizontalLayoutWidget_9->setGeometry(QRect(780, 240, 236, 31));
+        horizontalLayoutWidget_9->setGeometry(QRect(780, 240, 482, 31));
         horizontalLayout_6 = new QHBoxLayout(horizontalLayoutWidget_9);
         horizontalLayout_6->setObjectName("horizontalLayout_6");
         horizontalLayout_6->setContentsMargins(0, 0, 0, 0);
@@ -289,6 +295,21 @@ public:
 
         horizontalLayout_6->addWidget(comboBoxSearch);
 
+        label = new QLabel(horizontalLayoutWidget_9);
+        label->setObjectName("label");
+
+        horizontalLayout_6->addWidget(label);
+
+        radioButtonTenDaoNguoYes = new QRadioButton(horizontalLayoutWidget_9);
+        radioButtonTenDaoNguoYes->setObjectName("radioButtonTenDaoNguoYes");
+
+        horizontalLayout_6->addWidget(radioButtonTenDaoNguoYes);
+
+        radioButtonTenDaoNguocNo = new QRadioButton(horizontalLayoutWidget_9);
+        radioButtonTenDaoNguocNo->setObjectName("radioButtonTenDaoNguocNo");
+
+        horizontalLayout_6->addWidget(radioButtonTenDaoNguocNo);
+
         lableStatus = new QLabel(centralwidget);
         lableStatus->setObjectName("lableStatus");
         lableStatus->setGeometry(QRect(20, 530, 81, 20));
@@ -297,7 +318,7 @@ public:
         lableStatusView->setGeometry(QRect(110, 530, 63, 20));
         horizontalLayoutWidget_10 = new QWidget(centralwidget);
         horizontalLayoutWidget_10->setObjectName("horizontalLayoutWidget_10");
-        horizontalLayoutWidget_10->setGeometry(QRect(780, 420, 281, 41));
+        horizontalLayoutWidget_10->setGeometry(QRect(780, 420, 333, 41));
         horizontalLayout_7 = new QHBoxLayout(horizontalLayoutWidget_10);
         horizontalLayout_7->setObjectName("horizontalLayout_7");
         horizontalLayout_7->setContentsMargins(0, 0, 0, 0);
@@ -314,7 +335,7 @@ public:
 
         horizontalLayoutWidget_11 = new QWidget(centralwidget);
         horizontalLayoutWidget_11->setObjectName("horizontalLayoutWidget_11");
-        horizontalLayoutWidget_11->setGeometry(QRect(780, 470, 281, 41));
+        horizontalLayoutWidget_11->setGeometry(QRect(780, 470, 327, 41));
         horizontalLayout_8 = new QHBoxLayout(horizontalLayoutWidget_11);
         horizontalLayout_8->setObjectName("horizontalLayout_8");
         horizontalLayout_8->setContentsMargins(0, 0, 0, 0);
@@ -331,7 +352,7 @@ public:
 
         horizontalLayoutWidget_12 = new QWidget(centralwidget);
         horizontalLayoutWidget_12->setObjectName("horizontalLayoutWidget_12");
-        horizontalLayoutWidget_12->setGeometry(QRect(1010, 130, 218, 31));
+        horizontalLayoutWidget_12->setGeometry(QRect(1010, 130, 228, 31));
         horizontalLayout_9 = new QHBoxLayout(horizontalLayoutWidget_12);
         horizontalLayout_9->setObjectName("horizontalLayout_9");
         horizontalLayout_9->setContentsMargins(0, 0, 0, 0);
@@ -354,10 +375,13 @@ public:
         saveBtn = new QPushButton(centralwidget);
         saveBtn->setObjectName("saveBtn");
         saveBtn->setGeometry(QRect(720, 518, 51, 31));
+        comboBoxLopTb = new QComboBox(centralwidget);
+        comboBoxLopTb->setObjectName("comboBoxLopTb");
+        comboBoxLopTb->setGeometry(QRect(980, 360, 111, 28));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1264, 25));
+        menubar->setGeometry(QRect(0, 0, 1307, 25));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
@@ -409,6 +433,7 @@ public:
         comboBoxSort->setItemText(3, QCoreApplication::translate("MainWindow", "Selection sort", nullptr));
         comboBoxSort->setItemText(4, QCoreApplication::translate("MainWindow", "Quick sort", nullptr));
         comboBoxSort->setItemText(5, QCoreApplication::translate("MainWindow", "Merge sort", nullptr));
+        comboBoxSort->setItemText(6, QCoreApplication::translate("MainWindow", "Heap sort", nullptr));
 
         lableSearch->setText(QCoreApplication::translate("MainWindow", "T\303\254m ki\341\272\277m theo", nullptr));
         comboBoxSearch->setItemText(0, QCoreApplication::translate("MainWindow", "M\303\243 s\341\273\221 sinh vi\303\252n", nullptr));
@@ -417,6 +442,9 @@ public:
         comboBoxSearch->setItemText(3, QCoreApplication::translate("MainWindow", "H\341\273\215", nullptr));
         comboBoxSearch->setItemText(4, QCoreApplication::translate("MainWindow", "L\341\273\233p", nullptr));
 
+        label->setText(QCoreApplication::translate("MainWindow", "T\303\252n \304\221\341\272\243o ng\306\260\341\273\243c : ", nullptr));
+        radioButtonTenDaoNguoYes->setText(QCoreApplication::translate("MainWindow", "c\303\263", nullptr));
+        radioButtonTenDaoNguocNo->setText(QCoreApplication::translate("MainWindow", "kh\303\264ng", nullptr));
         lableStatus->setText(QCoreApplication::translate("MainWindow", "Tr\341\272\241ng th\303\241i:", nullptr));
         lableStatusView->setText(QString());
         listMinBtn->setText(QCoreApplication::translate("MainWindow", "Li\341\273\207t k\303\252 c\303\241c sinh vi\303\252n \304\221i\341\273\203m th\341\272\245p nh\341\272\245t", nullptr));

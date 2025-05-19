@@ -50,7 +50,6 @@ dslk_don::node* dslk_don::them_sv(SinhVien &sv){
     node *p = create_new_node(sv);
     p->next = first;
     first = p;
-    qDebug() << p;
     return p;
 }
 

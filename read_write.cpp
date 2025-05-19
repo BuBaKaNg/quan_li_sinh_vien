@@ -7,6 +7,8 @@
 #include "read_write.h"
 #include "DanhSach.h"
 #include "dslk_don.h"
+#include <QTableWidget>
+#include <QFileDialog>
 #include <QMessageBox>
 // #include "dslk_vong.h"
 // #include "dslk_kep.h"
@@ -59,9 +61,8 @@ bool check_data_null(SinhVien x){
 }
 
 template<typename ListType>
-QStringList loadDuLieu(const QString& filePath, ListType& danhSach) {
+QStringList loadDuLieu(const QString& filePath, ListType& danhSach, QSet<QString> &mssvSet) {
     QStringList errors;
-    QSet<QString> mssvSet;
     QFile file(filePath);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -105,6 +106,7 @@ QStringList loadDuLieu(const QString& filePath, ListType& danhSach) {
         if (!hasError) {
             mssvSet.insert(sv.getMssv());
             danhSach.them_sv(sv);
+            qDebug() << "đã thêm ";
         }
 
     }
@@ -112,3 +114,40 @@ QStringList loadDuLieu(const QString& filePath, ListType& danhSach) {
     return errors;
 }
 
+
+void saveTableToCSV(QTableWidget *table)
+{
+    QString fileName = QFileDialog::getSaveFileName(nullptr, "Lưu file CSV", "", "CSV files (*.csv)");
+    if (fileName.isEmpty())
+        return;
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::warning(nullptr, "Lỗi", "Không thể mở file để ghi!");
+        return;
+    }
+
+    QTextStream out(&file);
+
+    // Ghi dòng tiêu đề (header)
+    for (int col = 0; col < 5; ++col) {
+        out << table->horizontalHeaderItem(col)->text();
+        if (col < table->columnCount() - 1)
+            out << ";";
+    }
+    out << "\n";
+
+    // Ghi từng dòng dữ liệu
+    for (int row = 0; row < table->rowCount(); ++row) {
+        for (int col = 0; col < 5; ++col) {
+            QTableWidgetItem *item = table->item(row, col);
+            out << (item ? item->text() : "");
+            if (col < table->columnCount() - 1)
+                out << ";";
+        }
+        out << "\n";
+    }
+
+    file.close();
+    QMessageBox::information(nullptr, "Hoàn tất", "Dữ liệu đã được lưu vào file CSV.");
+}
