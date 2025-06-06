@@ -7,6 +7,7 @@
 #include "dslk_don.h"
 #include "dslk_vong.h"
 #include "mang.h"
+
 #include "dslk_kep.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -68,6 +69,10 @@ private slots:
     void showTableContextMenu(const QPoint &pos);
 
     void on_saveBtn_clicked();
+
+    void on_clearBtn_clicked();
+
+    void on_pushButton_2_clicked();
 
 private:
     template<typename ListType>

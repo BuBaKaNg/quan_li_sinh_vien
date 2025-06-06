@@ -76,6 +76,7 @@ public:
 
         lineEditMssv = new QLineEdit(formLayoutWidget);
         lineEditMssv->setObjectName("lineEditMssv");
+        lineEditMssv->setEnabled(false);
 
         formLayout->setWidget(0, QFormLayout::FieldRole, lineEditMssv);
 

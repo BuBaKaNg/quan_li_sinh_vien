@@ -78,11 +78,11 @@ bool dslk_kep::cmp_bang_diem(node* a, node* b) {
 }
 
 bool dslk_kep::cmp_bang_ten(node* a, node* b) {
-    return a->sv.ten < b->sv.ten;
+    return QString::localeAwareCompare(a->sv.ten , b->sv.ten) < 0;
 }
 
 bool dslk_kep::cmp_bang_mssv(node* a, node* b) {
-    return a->sv.mssv < b->sv.mssv;
+    return a->sv.mssv.toLower() < b->sv.mssv.toLower();
 }
 // Sắp xếp theo Bubble sortsort
 void dslk_kep::bubble_sort(bool (*cmp)(node *, node *)) {
@@ -196,26 +196,28 @@ node* dslk_kep::getNodeAtIndex(int index){
 
 
 int dslk_kep::search_theo_ma(node* a, node* b){
-    if(a->sv.mssv == b->sv.mssv) return 0;
-    if(a->sv.mssv > b->sv.mssv) return 1;
-    if(a->sv.mssv < b->sv.mssv) return -1;
+    if(a->sv.mssv.startsWith(b->sv.mssv, Qt::CaseInsensitive)) return 0;
+    if(a->sv.mssv.toLower() > b->sv.mssv.toLower()) return 1;
+    if(a->sv.mssv.toLower() < b->sv.mssv.toLower()) return -1;
+    return 2;
 }
 
 int dslk_kep::search_theo_ho(node* a, node* b){
-    if(a->sv.ho == b->sv.ho) return 0;
-    if(a->sv.ho > b->sv.ho) return 1;
-    if(a->sv.ho < b->sv.ho) return -1;
+    if(a->sv.ho.startsWith(b->sv.mssv, Qt::CaseInsensitive)) return 0;
+    if(QString::localeAwareCompare(a->sv.ho.toLower(), b->sv.ho.toLower()) > 0) return 1;
+    if(QString::localeAwareCompare(a->sv.ho.toLower(), b->sv.ho.toLower()) < 0) return -1;
+    return 2;
 }
 
 
 int dslk_kep::search_theo_ten(node* a, node* b){
-    if(a->sv.ten == b->sv.ten) return 0;
-    if(a->sv.ten > b->sv.ten) return 1;
-    if(a->sv.ten < b->sv.ten) return -1;
+    if(a->sv.ten.startsWith(b->sv.ten, Qt::CaseInsensitive)) return 0;
+    if(QString::localeAwareCompare(a->sv.ten.toLower(), b->sv.ten.toLower()) > 0) return 1;
+    if(QString::localeAwareCompare(a->sv.ten.toLower(), b->sv.ten.toLower()) < 0) return -1;
 }
 
 
-bool areEqual(qreal a, qreal b, qreal epsilon = 1e-3) {
+bool areEqual(qreal a, qreal b, qreal epsilon = 1e-9) {
     return qAbs(a - b) < epsilon;
 }
 
@@ -223,13 +225,15 @@ int dslk_kep::search_theo_diem(node* a, node* b){
     if(areEqual(a->sv.diem, b->sv.diem)) return 0;
     if(a->sv.diem > b->sv.diem) return 1;
     if(a->sv.diem < b->sv.diem) return -1;
+    return 2;
 }
 
 
 int dslk_kep::search_theo_lop(node* a, node* b){
-    if(a->sv.lop == b->sv.lop) return 0;
-    if(a->sv.lop > b->sv.lop) return 1;
-    if(a->sv.lop < b->sv.lop) return -1;
+    if(a->sv.lop.startsWith(b->sv.lop, Qt::CaseInsensitive)) return 0;
+    if(QString::localeAwareCompare(a->sv.lop.toLower(), b->sv.lop.toLower()) > 0) return 1;
+    if(QString::localeAwareCompare(a->sv.lop.toLower(), b->sv.lop.toLower()) < 0) return -1;
+    return 2;
 }
 
 
@@ -240,7 +244,6 @@ QList<int> dslk_kep::binary_search(int(*cmp)(node* a, node* b), node* des){
     while(l <= r){
         int m = (l + r) >> 1;
         node* p = getNodeAtIndex(m);
-        qDebug() << p->sv.diem << " " << m;
         if(cmp(p, des) == 0){
             int lindex = m - 1;
             node* temp = p;
@@ -256,9 +259,6 @@ QList<int> dslk_kep::binary_search(int(*cmp)(node* a, node* b), node* des){
                 ans.append(rindex);
                 rindex++;
                 temp = temp->next;
-            }
-            for(auto x : ans){
-                qDebug() << "index " << x;
             }
             return ans;
         }
@@ -339,5 +339,17 @@ void dslk_kep::quick_sort(int low, int high, bool(*cmp)(node* a, node* b)){
         quick_sort(low, p - 1, cmp);
         quick_sort(p + 1, high, cmp);
     }
+}
+
+void dslk_kep::clear(){
+    node* temp = first;
+    while(temp != nullptr){
+        node* p = temp;
+        temp = temp->next;
+        delete p;
+        length--;
+    }
+    first = nullptr;
+    last = nullptr;
 }
 

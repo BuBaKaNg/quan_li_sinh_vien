@@ -1,8 +1,8 @@
 #include "updateui.h"
 #include "ui_updateui.h"
-
-
-
+#include "read_write.h"
+#include <QMessageBox>
+#include "validate.h"
 updateui::updateui(SinhVien &sv, QSet<QString> &mssvSet, MainWindow *parent)
     : mainWin(parent)
     , ui(new Ui::updateui), sv(sv), mssvSet(mssvSet)
@@ -16,6 +16,7 @@ updateui::updateui(SinhVien &sv, QSet<QString> &mssvSet, MainWindow *parent)
     ui->doubleSpinBoxDiem->setValue(sv.diem);
     ui->doubleSpinBoxDiem->setMinimum(0);
     ui->doubleSpinBoxDiem->setMaximum(10);
+    this->setWindowIcon(QIcon("E:\\learnLongLife\\c++\\quan_li_sinh_vien\\icons\\update.png"));
 
 }
 
@@ -30,14 +31,58 @@ void updateui::on_pushButtonCancel_clicked()
 }
 
 
+
 void updateui::on_pushButtonSave_clicked()
 {
-    QString mssv = ui->lineEditMssv->text();
-    QString ho = ui->lineEditHo->text();
-    QString ten = ui->lineEditTen->text();
-    QString lop = ui->lineEditLop->text();
+    QString mssv = ui->lineEditMssv->text().trimmed();
+    QString ho = ui->lineEditHo->text().trimmed();
+    QString ten = ui->lineEditTen->text().trimmed();
+    QString lop = ui->lineEditLop->text().trimmed();
     qreal diem = ui->doubleSpinBoxDiem->value();
     SinhVien newSv = SinhVien(mssv, ho, ten, lop, diem);
+    QStringList errors;
+
+    validate vld;
+    if (!vld.isValidString(mssv)) {
+        errors << QString("Mã sinh viên chứa ký tự trắng hoặc không hợp lệ!");
+    }
+
+    if((!vld.isValidWithSpace(ho))){
+        errors << QString("Họ chứa ký tự không hợp lệ hoặc dài quá 255 ký tự!");
+
+    }
+    if(!vld.isValidWithSpace(ten)){
+        errors << QString("Tên chứa ký tự không hợp lệ hoặc dài quá 255 ký tự!");
+
+    }
+
+    if (!vld.isValidString(lop)) {
+        errors << QString("Lớp chứa ký tự trắng hoặc không hợp lệ!");
+    }
+
+    if (!check_data_null(newSv)) {
+        errors << QString("Thiếu thông tin bắt buộc!");
+    }
+    if (!errors.isEmpty()) {
+        QString errorText = "Đã xảy ra lỗi trong quá trình sửa:\n\n" + errors.join("\n");
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Lỗi sửa dữ liệu");
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setText("Sửa thất bại do dữ liệu không hợp lệ.");
+        msgBox.setDetailedText(errorText);  // Mở rộng để xem chi tiết
+        msgBox.exec();
+        return;
+    } else {
+        QMessageBox::information(this, "Thành công", "Sửa sinh viên thành công!");
+
+    }
+
+    newSv.ho= vld.deleteMiddleSpace(ho);
+    newSv.ten = vld.deleteMiddleSpace(ten);
+    newSv.lop = newSv.lop.toUpper();
+    newSv.mssv = newSv.mssv.toUpper();
+
     switch(mainWin->selectedIndex){
     case 0:
         break;

@@ -42,14 +42,14 @@ SinhVien process_substring(const QString& s) {
 
 bool check_msv(QString msv){
     for (QChar c : msv){
-        if (c == ' ') return false;
+        if (c == ' ' || c == ';' || c == ',') return false;
     }
     return true;
 }
 
 bool check_lop(QString lop){
     for (QChar c : lop){
-        if (c == ' ') return false;
+        if (c == ' ' || c == ';' || c == ',') return false;
     }
     return true;
 }
@@ -58,6 +58,10 @@ bool check_data_null(SinhVien x){
     if (x.getDiem() < 0 || x.getHo().length() == 0 || x.getLop().length() == 0 || x.getMssv().length() == 0 || x.getTen().length() == 0)
         return false;
     return true;
+}
+
+bool check_diem(int diem){
+    return diem >= 0 && diem <= 10;
 }
 
 template<typename ListType>
@@ -98,6 +102,11 @@ QStringList loadDuLieu(const QString& filePath, ListType& danhSach, QSet<QString
             hasError = true;
         }
 
+        if(!check_diem(sv.diem)) {
+            qDebug() << "Điểm" << sv.diem;
+            errors << QString("Dòng %1: Điểm không hợp lệ!").arg(lineNumber);
+            hasError = true;
+        }
         if (mssvSet.contains(sv.getMssv())) {
             errors << QString("Dòng %1: Trùng mã sinh viên: %2").arg(lineNumber).arg(sv.getMssv());
             hasError = true;

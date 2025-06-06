@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     selectedIndex = 0;
+    sortIndex = 0;
     path = "";
     ui->setupUi(this);
 
@@ -26,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidget->setColumnWidth(4, 80);  // Điểm
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    this->setWindowIcon(QIcon("E:\\learnLongLife\\c++\\quan_li_sinh_vien\\icons\\app.png"));
     connect(ui->tableWidget, &QTableWidget::customContextMenuRequested,
             this, &MainWindow::showTableContextMenu);
 }
@@ -33,6 +35,14 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+
+bool showYesNoMessageBox(QWidget* parent, const QString& title, const QString& message) {
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(parent, title, message,
+                                  QMessageBox::Yes | QMessageBox::No);
+    return reply == QMessageBox::Yes;
 }
 
 
@@ -77,23 +87,33 @@ bool MainWindow::initData() {
         break;
     case 1:{
         errors = loadDuLieu(path, ds_mang, mssvSet);
+        if(!errors.isEmpty()) ds_mang.clear();
         break;
     }
     case 2:{
 
         errors = loadDuLieu(path, ds_don, mssvSet);
+        if(!errors.isEmpty()) ds_don.clear();
+
         break;
     }
     case 3:
         errors = loadDuLieu(path, ds_kep, mssvSet);
+        if(!errors.isEmpty()) ds_kep.clear();
+
         break;
     case 4:
         errors = loadDuLieu(path, ds_vong, mssvSet);
-
+        if(!errors.isEmpty()) ds_vong.clear();
+        break;
+    default:
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không hợp lệ");
         break;
     }
 
+
     if (!errors.isEmpty()) {
+        mssvSet.clear();
         QString errorText = "Đã xảy ra lỗi trong quá trình import:\n\n" + errors.join("\n");
 
         QMessageBox msgBox;
@@ -119,6 +139,10 @@ void loadToTable(ListType& ds, QTableWidget* tableWidget, bool isVong = false) {
     // Duyệt danh sách (phụ thuộc cách bạn tổ chức)
     auto temp = ds.getFirst();
     if(temp == nullptr) return;
+
+    if(isVong && ds.isEmpty()){
+        return;
+    }
     if(temp != nullptr){
         tableWidget->insertRow(row);
         tableWidget->setItem(row, 0, new QTableWidgetItem(temp->sv.getMssv()));
@@ -177,22 +201,25 @@ void MainWindow::on_downloadBtn_clicked()
 {
     selectedIndex = ui->methodBox->currentIndex();
     if(path == "" || selectedIndex == 0){
-        QMessageBox::information(this, "Thông tin", "Bạn chưa chọn file hoặc chọn cách lưu trữ");
+        QMessageBox::critical(this, "Lỗi", "Bạn chưa chọn file hoặc chọn cách lưu trữ");
+        return;
     }
     initDs();
+    ui->comboBoxLopTb->clear();
     bool checkData = initData();
     if(checkData && selectedIndex != 1){
         switch(selectedIndex){
         case 2: {
-
             loadToTable(ds_don, ui->tableWidget);
             isImport = true;
+
             break;
         }
         case 3: {
 
             loadToTable(ds_kep, ui->tableWidget);
             isImport = true;
+
             break;
         }
         case 4: {
@@ -208,14 +235,18 @@ void MainWindow::on_downloadBtn_clicked()
     else if(selectedIndex == 1){
         loadToTableArray(ds_mang, ui->tableWidget);
         isImport = true;
+
     }
-    else {
-        ds_don.clear();
-    }
+    else return;
+
     QSet<QString> set = getLops(ui->tableWidget);
     for(auto x : set){
         ui->comboBoxLopTb->addItem(x);
     }
+    ui->clearBtn->setEnabled(true);
+    ui->downloadBtn->setEnabled(false);
+    ui->methodBox->setEnabled(false);
+
 }
 
 
@@ -225,8 +256,8 @@ void MainWindow::on_downloadBtn_clicked()
 void MainWindow::handleBubbleSort(){
     switch (selectedIndex){
         case 0:
-
-            break;
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
+        break;
         case 1:{
             QElapsedTimer timer;
             Helper<dslk_don::node, dslk_don> helper;
@@ -243,10 +274,10 @@ void MainWindow::handleBubbleSort(){
         }
         case 2: {
             QElapsedTimer timer;
-            timer.start();  // Bắt đầu đếm thời gian
             Helper<dslk_don::node, dslk_don> helper;
             int standardIndex = ui->comboBoxStandarSort->currentIndex();
             auto cmp = helper.getCmp(standardIndex);
+            timer.start();  // Bắt đầu đếm thời gian
             helper.buble_sort(ds_don.getFirst(), false, cmp);
             qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
             QString result;
@@ -259,10 +290,10 @@ void MainWindow::handleBubbleSort(){
         case 3:
         {
             QElapsedTimer timer;
-            timer.start();  // Bắt đầu đếm thời gian
             Helper<dslk_kep::node, dslk_kep> helper;
             int standardIndex = ui->comboBoxStandarSort->currentIndex();
             auto cmp = helper.getCmp(standardIndex);
+            timer.start();  // Bắt đầu đếm thời gian
             ds_kep.bubble_sort(cmp);
             qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
             QString result;
@@ -272,13 +303,12 @@ void MainWindow::handleBubbleSort(){
             loadToTable(ds_kep, ui->tableWidget);
             break;
         }
-            break;
         case 4:{
             QElapsedTimer timer;
-            timer.start();  // Bắt đầu đếm thời gian
             Helper<dslk_vong::node, dslk_vong> helper;
             int standard = ui->comboBoxStandarSort->currentIndex();
             auto cmp = helper.getCmp(standard);
+            timer.start();  // Bắt đầu đếm thời gian
             helper.buble_sort(ds_vong.getFirst(),true, cmp);
             qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
             QString result;
@@ -289,15 +319,15 @@ void MainWindow::handleBubbleSort(){
             break;
         }
         default:
-            break;
+            QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
     }
 }
 
 void MainWindow::handleInsertionSort(){
     switch (selectedIndex){
     case 0:
-
-    break;
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
+        break;
     case 1:
     {
         QElapsedTimer timer;
@@ -314,10 +344,10 @@ void MainWindow::handleInsertionSort(){
         break;
     }    case 2: {
         QElapsedTimer timer;
-        timer.start();  // Bắt đầu đếm thời gian
         Helper<dslk_don::node, dslk_don> helper;
         int standardIndex = ui->comboBoxStandarSort->currentIndex();
         auto cmp = helper.getCmp(standardIndex);
+        timer.start();  // Bắt đầu đếm thời gian
         helper.insertion_sort(ds_don.getFirst(), false, cmp);
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
         QString result;
@@ -330,10 +360,10 @@ void MainWindow::handleInsertionSort(){
     case 3:
     {
         QElapsedTimer timer;
-        timer.start();  // Bắt đầu đếm thời gian
         Helper<dslk_kep::node, dslk_kep> helper;
         int standardIndex = ui->comboBoxStandarSort->currentIndex();
-        auto cmp = helper.getCmp(standardIndex);
+        auto cmp = helper.getCmp(standardIndex);        
+        timer.start();  // Bắt đầu đếm thời gian
         ds_kep.insertion_sort(cmp);
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
         QString result;
@@ -346,10 +376,10 @@ void MainWindow::handleInsertionSort(){
     case 4:
     {
         QElapsedTimer timer;
-        timer.start();  // Bắt đầu đếm thời gian
         Helper<dslk_vong::node, dslk_vong> helper;
         int standard = ui->comboBoxStandarSort->currentIndex();
         auto cmp = helper.getCmp(standard);
+        timer.start();  // Bắt đầu đếm thời gian
         helper.insertion_sort(ds_vong.getFirst(),true, cmp);
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
         QString result;
@@ -360,7 +390,7 @@ void MainWindow::handleInsertionSort(){
         break;
     }
     default:
-        break;
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
     }
 }
 
@@ -368,7 +398,7 @@ void MainWindow::handleInsertionSort(){
 void MainWindow::handleSelectionSort(){
     switch (selectedIndex){
     case 0:
-
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
         break;
     case 1:
     {
@@ -387,10 +417,10 @@ void MainWindow::handleSelectionSort(){
     }
     case 2: {
         QElapsedTimer timer;
-        timer.start();  // Bắt đầu đếm thời gian
         Helper<dslk_don::node, dslk_don> helper;
         int standardIndex = ui->comboBoxStandarSort->currentIndex();
         auto cmp = helper.getCmp(standardIndex);
+        timer.start();  // Bắt đầu đếm thời gian
         helper.selection_sort(ds_don.getFirst(), false, cmp);
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
         QString result;
@@ -403,10 +433,10 @@ void MainWindow::handleSelectionSort(){
     case 3:{
 
         QElapsedTimer timer;
-        timer.start();  // Bắt đầu đếm thời gian
         Helper<dslk_kep::node, dslk_kep> helper;
         int standardIndex = ui->comboBoxStandarSort->currentIndex();
         auto cmp = helper.getCmp(standardIndex);
+        timer.start();  // Bắt đầu đếm thời gian
         ds_kep.selection_sort(cmp);
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
         QString result;
@@ -420,10 +450,10 @@ void MainWindow::handleSelectionSort(){
     case 4:
     {
         QElapsedTimer timer;
-        timer.start();  // Bắt đầu đếm thời gian
         Helper<dslk_vong::node, dslk_vong> helper;
         int standard = ui->comboBoxStandarSort->currentIndex();
         auto cmp = helper.getCmp(standard);
+        timer.start();  // Bắt đầu đếm thời gian
         helper.selection_sort(ds_vong.getFirst(),true, cmp);
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
         QString result;
@@ -434,7 +464,7 @@ void MainWindow::handleSelectionSort(){
         break;
     }
     default:
-        break;
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
     }
 }
 
@@ -442,7 +472,7 @@ void MainWindow::handleSelectionSort(){
 void MainWindow::handleMergeSort(){
     switch (selectedIndex){
     case 0:
-
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
         break;
     case 1:
     {
@@ -461,10 +491,10 @@ void MainWindow::handleMergeSort(){
     }
     case 2: {
         QElapsedTimer timer;
-        timer.start();  // Bắt đầu đếm thời gian
         Helper<dslk_don::node, dslk_don> helper;
         int standardIndex = ui->comboBoxStandarSort->currentIndex();
         auto cmp = helper.getCmp(standardIndex);
+        timer.start();  // Bắt đầu đếm thời gian
         helper.mergeSort(&ds_don.getFirst(), cmp);
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
         QString result;
@@ -477,10 +507,10 @@ void MainWindow::handleMergeSort(){
     case 3:
     {
         QElapsedTimer timer;
-        timer.start();  // Bắt đầu đếm thời gian
         Helper<dslk_kep::node, dslk_kep> helper;
         int standardIndex = ui->comboBoxStandarSort->currentIndex();
         auto cmp = helper.getCmp(standardIndex);
+        timer.start();  // Bắt đầu đếm thời gian
         helper.mergeSort(&ds_kep.getFirst(), cmp);
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
         QString result;
@@ -494,12 +524,12 @@ void MainWindow::handleMergeSort(){
     case 4:
     {
         QElapsedTimer timer;
-        timer.start();  // Bắt đầu đếm thời gian
         Helper<dslk_vong::node, dslk_vong> helper;
         int standardIndex = ui->comboBoxStandarSort->currentIndex();
         auto cmp = helper.getCmp(standardIndex);
         // 1. Ngắt vòng
 
+        timer.start();  // Bắt đầu đếm thời gian
         helper.mergeSortVong_last(ds_vong.last, cmp);
 
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
@@ -511,14 +541,14 @@ void MainWindow::handleMergeSort(){
         break;
     }
     default:
-        break;
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
     }
 }
 
 void MainWindow::handleQuickSort(){
     switch (selectedIndex){
     case 0:
-
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
         break;
     case 1:
     {
@@ -526,8 +556,8 @@ void MainWindow::handleQuickSort(){
         int standardIndex = ui->comboBoxStandarSort->currentIndex();
         timer.start();  // Bắt đầu đếm thời gian
         ds_mang.quick_sort(standardIndex + 1, 0, ds_mang.size() - 1);
-        searchMode = standardIndex;
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
+        searchMode = standardIndex;
         QString result;
         result = QString::number(nanos / 1'000'000.0, 'f', 3) + " ms";
         ui->timeSortView->setText(result);
@@ -535,6 +565,7 @@ void MainWindow::handleQuickSort(){
         break;
     }
     case 2:
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
         break;
     case 3:
     {
@@ -547,6 +578,7 @@ void MainWindow::handleQuickSort(){
             ds_kep.quick_sort(0, ds_kep.length - 1, ds_kep.cmp_bang_mssv);
             break;
         case 1:
+
             ds_kep.quick_sort(0, ds_kep.length - 1, ds_kep.cmp_bang_ten);
 
             break;
@@ -565,21 +597,21 @@ void MainWindow::handleQuickSort(){
         break;
     }
     case 4:
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
         break;
     default:
-        break;
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
     }
 }
 
 void MainWindow::handleHeapSort() {
     switch (selectedIndex){
     case 0:
-
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
         break;
     case 1:
     {
         QElapsedTimer timer;
-        Helper<dslk_don::node, dslk_don> helper;
         int standardIndex = ui->comboBoxStandarSort->currentIndex();
         timer.start();  // Bắt đầu đếm thời gian
         ds_mang.heap_sort(standardIndex + 1,ds_mang.size());
@@ -592,11 +624,11 @@ void MainWindow::handleHeapSort() {
         break;
     }
     case 2:
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
         break;
     case 3:
     {
         QElapsedTimer timer;
-        Helper<dslk_don::node, dslk_don> helper;
         int standardIndex = ui->comboBoxStandarSort->currentIndex();
 
         timer.start();  // Bắt đầu đếm thời gian
@@ -620,8 +652,10 @@ void MainWindow::handleHeapSort() {
         break;
     }
     case 4:
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
         break;
     default:
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
         break;
     }
 }
@@ -632,7 +666,6 @@ void MainWindow::on_sortBtn_clicked()
         QMessageBox::critical(this, "Lỗi", "Vui lòng import trước khi sắp xếp");
         return;
     }
-
     switch(sortIndex) {
     case 0:
         QMessageBox::critical(this, "Lỗi", "Vui lòng chọn phương thức sort");
@@ -654,7 +687,9 @@ void MainWindow::on_sortBtn_clicked()
         break;
     case 6:
         handleHeapSort();
+        break;
     default:
+        QMessageBox::critical(this,"Lỗi", "Phương thức lưu trữ không phù hợp");
         break;
     }
 }
@@ -745,6 +780,11 @@ void MainWindow::on_listMinBtn_clicked()
         break;
     }
     ui->huyMaxBtn->setEnabled(false);
+    ui->huySearchBtn->setEnabled(false);
+    ui->searchBtn->setEnabled(false);
+    ui->comboBoxSearch->setEnabled(false);
+    ui->sortBtn->setEnabled(false);
+
 }
 
 
@@ -787,6 +827,10 @@ void MainWindow::on_listMaxBtn_clicked()
         break;
     }
     ui->huyMinBtn->setEnabled(false);
+    ui->huySearchBtn->setEnabled(false);
+    ui->searchBtn->setEnabled(false);
+    ui->comboBoxSearch->setEnabled(false);
+    ui->sortBtn->setEnabled(false);
 }
 
 
@@ -813,6 +857,10 @@ void MainWindow::on_huyMaxBtn_clicked()
         break;
     }
     ui->huyMaxBtn->setEnabled(false);
+    ui->searchBtn->setEnabled(true);
+    ui->comboBoxSearch->setEnabled(true);
+    ui->sortBtn->setEnabled(true);
+
 }
 
 
@@ -838,6 +886,10 @@ void MainWindow::on_huyMinBtn_clicked()
         break;
     }
     ui->huyMinBtn->setEnabled(false);
+    ui->searchBtn->setEnabled(true);
+    ui->comboBoxSearch->setEnabled(true);
+    ui->sortBtn->setEnabled(true);
+
 
 }
 
@@ -892,7 +944,7 @@ void MainWindow::handleTimKiem(ListType &list) {
     Helper<typename ListType::node, ListType> helper;
     QString input = ui->lineEdit->text();
     QElapsedTimer timer;
-    QList<int> indexes;
+    QList<int> indexes = {};
     switch(index){
     case 0:{
         QString input = ui->lineEdit->text();
@@ -900,16 +952,15 @@ void MainWindow::handleTimKiem(ListType &list) {
         indexes = helper.tim_kiem_theo_ma(list.getFirst(),input);
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
         QString result;
-        result = QString::number(nanos / 1'000'000.0, 'f', 3) + " ms";
+        result = QString::number(nanos /1'000'000.0, 'f', 3) + " ms";
         ui->timeSearchView->setText(result);
         break;
     }
-
     case 1:{
         QString input = ui->lineEdit->text();
         QElapsedTimer timer;
         timer.start();  // Bắt đầu đếm thời gian
-        indexes = helper.tim_kiem_theo_ten(list.getFirst(),input);
+        indexes = QList(helper.tim_kiem_theo_ten(list.getFirst(),input));
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
         QString result;
         result = QString::number(nanos / 1'000'000.0, 'f', 3) + " ms";
@@ -953,6 +1004,10 @@ void MainWindow::handleTimKiem(ListType &list) {
     }
     default:
         break;
+    }
+    if(indexes.size() == 0) {
+        QMessageBox::information(this,"Thông tin", "Không tìm thấy");
+        return;
     }
     if(checkDaoNguoc){
         ui->tableWidget->setColumnCount(6); // Ví dụ: 6 cột
@@ -1055,9 +1110,17 @@ void MainWindow::handleTimKiemArr(mang &ds) {
     default:
         break;
     }
+    if(indexes.size() == 0) {
+        QMessageBox::information(this,"Thông tin", "Không tìm thấy");
+        return;
+    }
     if(checkDaoNguoc){
         ui->tableWidget->setColumnCount(6); // Ví dụ: 6 cột
         ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Mã số sinh viên" << "Họ" << "Tên" << "Lớp" << "Điểm" << "Tên đảo ngược");
+    }
+    else{
+        ui->tableWidget->setColumnCount(5); // Ví dụ: 6 cột
+        ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Mã số sinh viên" << "Họ" << "Tên" << "Lớp" << "Điểm");
     }
     int rows = ui->tableWidget->rowCount();
     int columns = ui->tableWidget->columnCount();
@@ -1149,6 +1212,10 @@ void MainWindow::handleTimKiemVong() {
     default:
         break;
     }
+    if(indexes.size() == 0) {
+        QMessageBox::information(this,"Thông tin", "Không tìm thấy");
+        return;
+    }
     if(checkDaoNguoc){
         ui->tableWidget->setColumnCount(6); // Ví dụ: 6 cột
         ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Mã số sinh viên" << "Họ" << "Tên" << "Lớp" << "Điểm" << "Tên đảo ngược");
@@ -1185,12 +1252,13 @@ void MainWindow::handleTimKiemKep() {
     switch(index){
     case 0:{
         QString input = ui->lineEdit->text();
-        timer.start();  // Bắt đầu đếm thời gian
         SinhVien sv = SinhVien();
         sv.mssv = input;
         dslk_kep::node* des = ds_kep.create_new_node(sv);
+        timer.start();  // Bắt đầu đếm thời gian
+
         if(searchMode == 0){
-        indexes = ds_kep.binary_search(&dslk_kep::search_theo_ma, des);
+            indexes = ds_kep.binary_search(&dslk_kep::search_theo_ma, des);
         }
         else {
             Helper<dslk_kep::node, dslk_kep> helper;
@@ -1206,10 +1274,11 @@ void MainWindow::handleTimKiemKep() {
     case 1:{
         QString input = ui->lineEdit->text();
         QElapsedTimer timer;
-        timer.start();  // Bắt đầu đếm thời gian
         SinhVien sv = SinhVien();
         sv.ten = input;
         dslk_kep::node* des = ds_kep.create_new_node(sv);
+        timer.start();  // Bắt đầu đếm thời gian
+
         if(searchMode == 1){
             indexes = ds_kep.binary_search(&dslk_kep::search_theo_ten, des);
         }
@@ -1226,11 +1295,12 @@ void MainWindow::handleTimKiemKep() {
     case 2: {
         QString text = ui->lineEdit->text();
         double input = text.toDouble();
-        QElapsedTimer timer;
         timer.start();  // Bắt đầu đếm thời gian
         SinhVien sv = SinhVien();
         sv.diem = input;
         dslk_kep::node* des = ds_kep.create_new_node(sv);
+        QElapsedTimer timer;
+        timer.start();
         if(searchMode == 2){
             indexes = ds_kep.binary_search(&dslk_kep::search_theo_diem, des);
         }
@@ -1247,10 +1317,10 @@ void MainWindow::handleTimKiemKep() {
     case 3:{
         QString input = ui->lineEdit->text();
         QElapsedTimer timer;
-        timer.start();  // Bắt đầu đếm thời gian
         SinhVien sv = SinhVien();
         sv.ho = input;
-        dslk_kep::node* des = ds_kep.create_new_node(sv);
+        timer.start();  // Bắt đầu đếm thời gian
+
         Helper<dslk_kep::node, dslk_kep> helper;
         indexes = helper.tim_kiem_theo_ho(ds_kep.getFirst(), input);
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
@@ -1263,10 +1333,10 @@ void MainWindow::handleTimKiemKep() {
     {
         QString input = ui->lineEdit->text();
         QElapsedTimer timer;
-        timer.start();  // Bắt đầu đếm thời gian
         SinhVien sv = SinhVien();
         sv.lop = input;
-        dslk_kep::node* des = ds_kep.create_new_node(sv);
+        timer.start();  // Bắt đầu đếm thời gian
+
         Helper<dslk_kep::node, dslk_kep> helper;
         indexes = helper.tim_kiem_theo_lop(ds_kep.getFirst(), input);
         qint64 nanos = timer.nsecsElapsed();  // Thời gian đã trôi qua (ms)
@@ -1278,10 +1348,15 @@ void MainWindow::handleTimKiemKep() {
     default:
         break;
     }
+    if(indexes.size() == 0) {
+        QMessageBox::information(this,"Thông tin", "Không tìm thấy");
+        return;
+    }
     if(checkDaoNguoc){
         ui->tableWidget->setColumnCount(6); // Ví dụ: 6 cột
         ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Mã số sinh viên" << "Họ" << "Tên" << "Lớp" << "Điểm" << "Tên đảo ngược");
     }
+
     int rows = ui->tableWidget->rowCount();
     int columns = ui->tableWidget->columnCount();
     for(int i = 0; i < rows; i++){
@@ -1332,6 +1407,8 @@ void MainWindow::on_searchBtn_clicked()
             break;
     }
     ui->huySearchBtn->setEnabled(true);
+    ui->searchBtn->setEnabled(false);
+    ui->comboBoxSearch->setEnabled(false);
 }
 
 void MainWindow::resert() {
@@ -1362,7 +1439,9 @@ void MainWindow::on_huySearchBtn_clicked()
     default:
         break;
     }
-
+    ui->huySearchBtn->setEnabled(false);
+    ui->searchBtn->setEnabled(true);
+    ui->comboBoxSearch->setEnabled(true);
 }
 
 
@@ -1431,8 +1510,8 @@ void MainWindow::showTableContextMenu(const QPoint &pos)
     QTableWidgetItem* item = ui->tableWidget->itemAt(pos);
 
     QMenu menu(this);
-    QAction* editAction;
-    QAction* deleteAction;
+    QAction* editAction = nullptr;
+    QAction* deleteAction = nullptr;
 
 
     // Nếu người dùng chuột phải vào 1 dòng đã có dữ liệu thì mới cho sửa/xoá
@@ -1456,14 +1535,17 @@ void MainWindow::showTableContextMenu(const QPoint &pos)
         updateui* updateUi = new updateui(sv, mssvSet,this);
         updateUi->show();
     } else if (selectedAction == deleteAction) {
-        int row = item->row();
-        QString mssv = ui->tableWidget->item(row, 0)->text();
-        handleXoaSv(mssv);
-        ui->tableWidget->removeRow(row);
-        ui->comboBoxLopTb->clear();
-        QSet<QString> set = getLops(ui->tableWidget);
-        for(auto x : set){
-            ui->comboBoxLopTb->addItem(x);
+        bool reply = showYesNoMessageBox(this,"Xác nhận", "Bạn có chắc chắn xóa");
+        if(reply){
+            int row = item->row();
+            QString mssv = ui->tableWidget->item(row, 0)->text();
+            handleXoaSv(mssv);
+            ui->tableWidget->removeRow(row);
+            ui->comboBoxLopTb->clear();
+            QSet<QString> set = getLops(ui->tableWidget);
+            for(auto x : set){
+                ui->comboBoxLopTb->addItem(x);
+            }
         }
     }
 }
@@ -1476,4 +1558,37 @@ void MainWindow::on_saveBtn_clicked()
     }
     saveTableToCSV(ui->tableWidget);
 }
+
+
+void MainWindow::on_clearBtn_clicked()
+{
+    switch (selectedIndex){
+    case 1:
+        ds_mang.clear();
+        loadToTableArray(ds_mang, ui->tableWidget);
+        break;
+    case 2:
+        ds_don.clear();
+        loadToTable(ds_don, ui->tableWidget, false);
+        break;
+    case 3:
+        ds_kep.clear();
+        loadToTable(ds_kep, ui->tableWidget, false);
+        break;
+    case 4:
+        ds_vong.clear();
+        loadToTable(ds_vong, ui->tableWidget, true);
+        break;
+    }
+    ui->clearBtn->setEnabled(false);
+    mssvSet.clear();
+    this->isImport = false;
+    this->selectedIndex = 0;
+    ui->methodBox->setCurrentIndex(0);
+    ui->methodBox->setEnabled(true);
+    ui->downloadBtn->setEnabled(true);
+}
+
+
+
 

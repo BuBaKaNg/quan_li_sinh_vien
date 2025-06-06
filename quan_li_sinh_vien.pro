@@ -22,7 +22,8 @@ SOURCES += \
     mang.cpp \
     read_write.cpp \
     sinhvien.cpp \
-    updateui.cpp
+    updateui.cpp \
+    validate.cpp
 
 
 HEADERS += \
@@ -36,7 +37,8 @@ HEADERS += \
     mang.h \
     read_write.h \
     sinhvien.h \
-    updateui.h
+    updateui.h \
+    validate.h
 
 FORMS += \
     addui.ui \

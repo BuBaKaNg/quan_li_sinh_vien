@@ -8,6 +8,7 @@ release/mainwindow.o
 release/mang.o
 release/sinhvien.o
 release/updateui.o
+release/validate.o
 release/moc_addui.o
 release/moc_mainwindow.o
 release/moc_updateui.o

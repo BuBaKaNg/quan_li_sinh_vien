@@ -1,12 +1,12 @@
+#include <QString>
 template <typename NodeType>
-
 bool cmp_bang_diem(NodeType* a, NodeType* b){
     return a->sv.getDiem() < b->sv.getDiem();
 }
 
 template <typename NodeType>
 bool cmp_bang_ten(NodeType* a, NodeType* b){
-    return a->sv.getTen() < b->sv.getTen();
+    return QString::localeAwareCompare(a->sv.getTen() , b->sv.getTen()) < 0;
 }
 
 template <typename NodeType>

@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <qmenu.h>
 #include "read_write.h"
+#include "validate.h"
 addUi::addUi(QSet<QString> &mssvSet, MainWindow *parent)
     : ui(new Ui::addUi), mssvSet(mssvSet)
 {
@@ -12,6 +13,8 @@ addUi::addUi(QSet<QString> &mssvSet, MainWindow *parent)
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->doubleSpinBoxDiem->setMinimum(0);
     ui->doubleSpinBoxDiem->setMaximum(10);
+    this->setWindowIcon(QIcon("E:\\learnLongLife\\c++\\quan_li_sinh_vien\\icons\\add.png"));
+
     connect(ui->tableWidget, &QTableWidget::customContextMenuRequested,
             this, &addUi::showTableContextMenu);
 }
@@ -31,20 +34,34 @@ void addUi::insertToTable(SinhVien &sv) {
     table->setItem(0, 4, new QTableWidgetItem(QString::number(sv.diem)));
 }
 
+
+
+
 bool addUi::validateThemSv(SinhVien &sv,QSet<QString> &mssvSet){
     QString mssv = sv.mssv;
     QString ho = sv.ho;
     QString ten = sv.ten;
     QString lop = sv.lop;
     QStringList errors;
-
-    if (!check_msv(mssv)) {
+    validate vld;
+    if (!vld.isValidString(mssv)) {
         errors << QString("Mã sinh viên chứa ký tự trắng hoặc không hợp lệ!");
     }
 
-    if (!check_lop(lop)) {
+    if((!vld.isValidWithSpace(ho))){
+        errors << QString("Họ chứa ký tự không hợp lệ hoặc dài quá 255 ký tự!");
+
+    }
+    if(!vld.isValidWithSpace(ten)){
+        errors << QString("Tên chứa ký tự không hợp lệ hoặc dài quá 255 ký tự!");
+
+    }
+
+    if ((!vld.isValidString(lop))) {
         errors << QString("Lớp chứa ký tự trắng hoặc không hợp lệ!");
     }
+
+
 
     if (!check_data_null(sv)) {
         errors << QString("Thiếu thông tin bắt buộc!");
@@ -64,7 +81,11 @@ bool addUi::validateThemSv(SinhVien &sv,QSet<QString> &mssvSet){
         msgBox.exec();
         return false;
     } else {
-        QMessageBox::information(this, "Thành công", "Thêm sinh viên thành công!");
+        QMessageBox::information(this, "Thành công", "Thêm sinh viên thành công!");        
+        sv.ho= vld.deleteMiddleSpace(ho);
+        sv.ten = vld.deleteMiddleSpace(ten);
+        sv.lop = sv.lop.toUpper();
+        sv.mssv = sv.mssv.toUpper();
         return true;
     }
 }

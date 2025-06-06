@@ -59,7 +59,10 @@ static constexpr auto qt_meta_stringdata_ZN10MainWindowE = QtMocHelpers::stringD
     "on_huySearchBtn_clicked",
     "on_addBtn_clicked",
     "showTableContextMenu",
-    "pos"
+    "pos",
+    "on_saveBtn_clicked",
+    "on_clearBtn_clicked",
+    "on_pushButton_2_clicked"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -71,7 +74,7 @@ Q_CONSTINIT static const uint qt_meta_data_ZN10MainWindowE[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-      19,   14, // methods
+      22,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -79,25 +82,28 @@ Q_CONSTINIT static const uint qt_meta_data_ZN10MainWindowE[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,  128,    2, 0x08,    1 /* Private */,
-       3,    0,  129,    2, 0x08,    2 /* Private */,
-       4,    0,  130,    2, 0x08,    3 /* Private */,
-       5,    0,  131,    2, 0x08,    4 /* Private */,
-       6,    0,  132,    2, 0x08,    5 /* Private */,
-       7,    0,  133,    2, 0x08,    6 /* Private */,
-       8,    0,  134,    2, 0x08,    7 /* Private */,
-       9,    0,  135,    2, 0x08,    8 /* Private */,
-      10,    0,  136,    2, 0x08,    9 /* Private */,
-      11,    0,  137,    2, 0x08,   10 /* Private */,
-      12,    1,  138,    2, 0x08,   11 /* Private */,
-      14,    0,  141,    2, 0x08,   13 /* Private */,
-      15,    0,  142,    2, 0x08,   14 /* Private */,
-      16,    0,  143,    2, 0x08,   15 /* Private */,
-      17,    0,  144,    2, 0x08,   16 /* Private */,
-      18,    0,  145,    2, 0x08,   17 /* Private */,
-      19,    0,  146,    2, 0x08,   18 /* Private */,
-      20,    0,  147,    2, 0x08,   19 /* Private */,
-      21,    1,  148,    2, 0x08,   20 /* Private */,
+       1,    0,  146,    2, 0x08,    1 /* Private */,
+       3,    0,  147,    2, 0x08,    2 /* Private */,
+       4,    0,  148,    2, 0x08,    3 /* Private */,
+       5,    0,  149,    2, 0x08,    4 /* Private */,
+       6,    0,  150,    2, 0x08,    5 /* Private */,
+       7,    0,  151,    2, 0x08,    6 /* Private */,
+       8,    0,  152,    2, 0x08,    7 /* Private */,
+       9,    0,  153,    2, 0x08,    8 /* Private */,
+      10,    0,  154,    2, 0x08,    9 /* Private */,
+      11,    0,  155,    2, 0x08,   10 /* Private */,
+      12,    1,  156,    2, 0x08,   11 /* Private */,
+      14,    0,  159,    2, 0x08,   13 /* Private */,
+      15,    0,  160,    2, 0x08,   14 /* Private */,
+      16,    0,  161,    2, 0x08,   15 /* Private */,
+      17,    0,  162,    2, 0x08,   16 /* Private */,
+      18,    0,  163,    2, 0x08,   17 /* Private */,
+      19,    0,  164,    2, 0x08,   18 /* Private */,
+      20,    0,  165,    2, 0x08,   19 /* Private */,
+      21,    1,  166,    2, 0x08,   20 /* Private */,
+      23,    0,  169,    2, 0x08,   22 /* Private */,
+      24,    0,  170,    2, 0x08,   23 /* Private */,
+      25,    0,  171,    2, 0x08,   24 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -119,6 +125,9 @@ Q_CONSTINIT static const uint qt_meta_data_ZN10MainWindowE[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QPoint,   22,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -171,7 +180,13 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'showTableContextMenu'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QPoint &, std::false_type>
+        QtPrivate::TypeAndForceComplete<const QPoint &, std::false_type>,
+        // method 'on_saveBtn_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_clearBtn_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_pushButton_2_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
 } };
@@ -201,6 +216,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 16: _t->on_huySearchBtn_clicked(); break;
         case 17: _t->on_addBtn_clicked(); break;
         case 18: _t->showTableContextMenu((*reinterpret_cast< std::add_pointer_t<QPoint>>(_a[1]))); break;
+        case 19: _t->on_saveBtn_clicked(); break;
+        case 20: _t->on_clearBtn_clicked(); break;
         default: ;
         }
     }
@@ -225,14 +242,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 19)
+        if (_id < 22)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 19;
+        _id -= 22;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 19)
+        if (_id < 22)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 19;
+        _id -= 22;
     }
     return _id;
 }

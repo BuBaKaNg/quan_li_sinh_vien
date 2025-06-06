@@ -139,8 +139,30 @@ qreal dslk_vong::tinh_tb(QString& lop){
     if(p->sv.lop == lop) avg += p->sv.diem;
     return avg/cnt;
 }
+dslk_vong::node* nullNode = new dslk_vong::node();
 
-dslk_vong::node*& dslk_vong::getFirst() {
+dslk_vong::node*& dslk_vong::getFirst(){
+    if(last == nullptr) return nullNode;
     return last->next;
 }
 
+
+void dslk_vong::clear() {
+    if (last == nullptr) return; // Danh sách rỗng
+
+    node* temp = last->next; // Bắt đầu từ node đầu
+    node* p;
+
+    while (temp != last) {
+        p = temp;
+        temp = temp->next;
+        qDebug() << p->sv.getMssv();
+        delete p;
+    }
+
+    // Cuối cùng xóa node cuối (last)
+    qDebug() << last->sv.getMssv();
+    delete last;
+    last = nullptr;
+    first = nullptr;
+}

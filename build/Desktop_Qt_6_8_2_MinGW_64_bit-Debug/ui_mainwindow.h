@@ -39,6 +39,7 @@ public:
     QHBoxLayout *methodLayout;
     QLabel *labelMethod;
     QComboBox *methodBox;
+    QPushButton *clearBtn;
     QHBoxLayout *actionLayout;
     QPushButton *downloadBtn;
     QPushButton *exitBtn;
@@ -73,7 +74,6 @@ public:
     QLabel *label;
     QRadioButton *radioButtonTenDaoNguoYes;
     QRadioButton *radioButtonTenDaoNguocNo;
-    QLabel *lableStatus;
     QLabel *lableStatusView;
     QWidget *horizontalLayoutWidget_10;
     QHBoxLayout *horizontalLayout_7;
@@ -87,9 +87,11 @@ public:
     QHBoxLayout *horizontalLayout_9;
     QLabel *labelSort_2;
     QComboBox *comboBoxStandarSort;
+    QComboBox *comboBoxLopTb;
+    QWidget *widget;
+    QHBoxLayout *horizontalLayout_10;
     QPushButton *addBtn;
     QPushButton *saveBtn;
-    QComboBox *comboBoxLopTb;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -138,6 +140,12 @@ public:
         methodBox->setObjectName("methodBox");
 
         methodLayout->addWidget(methodBox);
+
+        clearBtn = new QPushButton(verticalLayoutWidget);
+        clearBtn->setObjectName("clearBtn");
+        clearBtn->setEnabled(false);
+
+        methodLayout->addWidget(clearBtn);
 
 
         mainLayout->addLayout(methodLayout);
@@ -310,9 +318,6 @@ public:
 
         horizontalLayout_6->addWidget(radioButtonTenDaoNguocNo);
 
-        lableStatus = new QLabel(centralwidget);
-        lableStatus->setObjectName("lableStatus");
-        lableStatus->setGeometry(QRect(20, 530, 81, 20));
         lableStatusView = new QLabel(centralwidget);
         lableStatusView->setObjectName("lableStatusView");
         lableStatusView->setGeometry(QRect(110, 530, 63, 20));
@@ -369,15 +374,25 @@ public:
 
         horizontalLayout_9->addWidget(comboBoxStandarSort);
 
-        addBtn = new QPushButton(centralwidget);
-        addBtn->setObjectName("addBtn");
-        addBtn->setGeometry(QRect(590, 519, 101, 31));
-        saveBtn = new QPushButton(centralwidget);
-        saveBtn->setObjectName("saveBtn");
-        saveBtn->setGeometry(QRect(720, 518, 51, 31));
         comboBoxLopTb = new QComboBox(centralwidget);
         comboBoxLopTb->setObjectName("comboBoxLopTb");
         comboBoxLopTb->setGeometry(QRect(980, 360, 111, 28));
+        widget = new QWidget(centralwidget);
+        widget->setObjectName("widget");
+        widget->setGeometry(QRect(440, 530, 331, 31));
+        horizontalLayout_10 = new QHBoxLayout(widget);
+        horizontalLayout_10->setObjectName("horizontalLayout_10");
+        horizontalLayout_10->setContentsMargins(0, 0, 0, 0);
+        addBtn = new QPushButton(widget);
+        addBtn->setObjectName("addBtn");
+
+        horizontalLayout_10->addWidget(addBtn);
+
+        saveBtn = new QPushButton(widget);
+        saveBtn->setObjectName("saveBtn");
+
+        horizontalLayout_10->addWidget(saveBtn);
+
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -404,6 +419,7 @@ public:
         methodBox->setItemText(3, QCoreApplication::translate("MainWindow", "Danh s\303\241ch li\303\252n k\341\272\277t k\303\251p", nullptr));
         methodBox->setItemText(4, QCoreApplication::translate("MainWindow", "Danh s\303\241ch li\303\252n k\341\272\277t v\303\262ng", nullptr));
 
+        clearBtn->setText(QCoreApplication::translate("MainWindow", "Clear", nullptr));
         downloadBtn->setText(QCoreApplication::translate("MainWindow", "T\341\272\243i t\341\273\207p", nullptr));
         exitBtn->setText(QCoreApplication::translate("MainWindow", "Tho\303\241t", nullptr));
         QTableWidgetItem *___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
@@ -445,7 +461,6 @@ public:
         label->setText(QCoreApplication::translate("MainWindow", "T\303\252n \304\221\341\272\243o ng\306\260\341\273\243c : ", nullptr));
         radioButtonTenDaoNguoYes->setText(QCoreApplication::translate("MainWindow", "c\303\263", nullptr));
         radioButtonTenDaoNguocNo->setText(QCoreApplication::translate("MainWindow", "kh\303\264ng", nullptr));
-        lableStatus->setText(QCoreApplication::translate("MainWindow", "Tr\341\272\241ng th\303\241i:", nullptr));
         lableStatusView->setText(QString());
         listMinBtn->setText(QCoreApplication::translate("MainWindow", "Li\341\273\207t k\303\252 c\303\241c sinh vi\303\252n \304\221i\341\273\203m th\341\272\245p nh\341\272\245t", nullptr));
         huyMinBtn->setText(QCoreApplication::translate("MainWindow", "H\341\273\247y", nullptr));

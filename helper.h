@@ -163,8 +163,6 @@ public:
             tail->next = nullptr;
         }
         while (current != nullptr) {
-            qDebug() << "đang xử lí";
-            current->sv.in_thong_tin();
             NodeType* next = current->next;
             current->next = nullptr;
             sorted = sortedInsert(sorted, current, cmp);
@@ -192,20 +190,20 @@ public:
                 return cmp_bang_diem;
 
         }
+        // return 3;
     }
 
 
 
-    QList<int> tim_kiem_theo_ma(NodeType* first, QString mssv, bool isVong = false){
+    QList<int> tim_kiem_theo_ma(NodeType* &first, QString mssv, bool isVong = false){
         NodeType* temp = first;
         int cnt = 0;
-        QList<int> searched;
-        if(!first) return {};
+        QList<int> searched = {};
+        if(first == nullptr) return searched;
         do{
-            if(temp->sv.getMssv() == mssv){
+            if(temp->sv.getMssv().startsWith(mssv, Qt::CaseInsensitive)){
                 searched.append(cnt);
             }
-            qDebug() << temp->sv.getMssv() << " " << mssv;
             cnt++;
             temp = temp->next;
         }while(temp != nullptr && (!isVong || temp != first));
@@ -218,7 +216,7 @@ public:
         QList<int> searched;
         if(!first) return {};
         do{
-            if(temp->sv.getTen() == ten){
+            if(temp->sv.getTen().startsWith(ten, Qt::CaseInsensitive)){
                 searched.append(cnt);
             }
             cnt++;
@@ -233,7 +231,7 @@ public:
         QList<int> searched;
         if(!first) return {};
         do{
-            if(temp->sv.getHo() == ho){
+            if(temp->sv.getHo().startsWith(ho, Qt::CaseInsensitive)){
                 searched.append(cnt);
             }
             cnt++;
@@ -265,7 +263,7 @@ public:
         QList<int> searched;
         if(!first) return {};
         do{
-            if(temp->sv.getLop() == lop){
+            if(temp->sv.getLop().startsWith(lop, Qt::CaseInsensitive)){
                 searched.append(cnt);
             }
             cnt++;

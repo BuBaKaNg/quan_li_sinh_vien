@@ -35,6 +35,7 @@ public:
     bool cmp(int choose, node* a, node* b);
     void swap_node(node* &a, node* &b);
     node*& getFirst();
+    void clear();
 };
 
 #endif // DSLK_VONG_H

@@ -98,21 +98,27 @@ qreal mang::tinh_tb(QString &lop){
 
 bool mang::cmp(int choose, SinhVien a, SinhVien b){
     if (choose == 1){       //Sắp xếp theo điểm
-        return a.mssv > b.mssv;
+        return QString::localeAwareCompare(a.mssv.toLower(), b.mssv.toLower()) > 0;
     }
     else{
         if (choose == 2){   // Sắp xếp theo MSV
-            return a.ten > b.ten;
+            return QString::localeAwareCompare(a.ten.toLower(), b.ten.toLower()) > 0;
         }
         else return a.diem > b.diem;  // Sắp xếp theo tên
     }
 }
 
 void mang::bubble_sort(int choose){
+    int flag;
     for (int i = 0; i < arr.size()-1; i++){
+        flag = true;
         for (int j = 0; j < arr.size()-i-1; j++){
-            if (cmp(choose, arr[j], arr[j+1])) std::swap(arr[j], arr[j+1]);
+            if (cmp(choose, arr[j], arr[j+1])){
+                std::swap(arr[j], arr[j+1]);
+                flag = false;
+            }
         }
+        if(flag) return;
     }
 }
 
@@ -226,22 +232,22 @@ QList<int> mang::tim_vet_can_ds_sv(int choose, QString tieu_chi){
     QList<int> ans;
     for (int i = 0; i < arr.size(); i++){
         if (choose == 1)    //Tìm theo mã sinh viên
-            if (lower_case(arr[i].mssv) == lower_case(tieu_chi)) ans.append(i);
+            if (arr[i].mssv.startsWith(tieu_chi, Qt::CaseInsensitive)) ans.append(i);
         if (choose == 2)    //Tìm theo tên
-            if (lower_case(arr[i].ten) == lower_case(tieu_chi)) ans.append(i);
+            if (arr[i].ten.startsWith(tieu_chi, Qt::CaseInsensitive)) ans.append(i);
         if (choose == 3)    //Tìm theo điểm
             if (arr[i].diem == tieu_chi.toDouble()) ans.append(i);
         if (choose == 4)    //Tìm theo họ
-            if (lower_case(arr[i].ho) == lower_case(tieu_chi)) ans.append(i);
+            if (arr[i].ho.startsWith(tieu_chi, Qt::CaseInsensitive)) ans.append(i);
         if (choose == 5)    //Tìm theo lớp
-            if (lower_case(arr[i].lop) == lower_case(tieu_chi)) ans.append(i);
+            if (arr[i].lop.startsWith(tieu_chi, Qt::CaseInsensitive)) ans.append(i);
     }
     return ans;
 }
 
 int mang::search(int choose, SinhVien x, QString tieu_chi){
     if (choose == 1){
-        if (lower_case(x.mssv) == lower_case(tieu_chi)){
+        if (x.mssv.startsWith(tieu_chi, Qt::CaseInsensitive)){
             return 0;
         }
         else{
@@ -250,7 +256,7 @@ int mang::search(int choose, SinhVien x, QString tieu_chi){
         }
     }
     if (choose == 2){
-        if (lower_case(x.ten) == lower_case(tieu_chi)){
+        if (x.ten.startsWith(tieu_chi, Qt::CaseInsensitive)){
             return 0;
         }
         else{
@@ -259,16 +265,21 @@ int mang::search(int choose, SinhVien x, QString tieu_chi){
         }
     }
     if (choose == 3){
-        if (x.diem == tieu_chi.toDouble()){
+        if (qAbs(x.diem - tieu_chi.toDouble()) <= 1e-3){
             return 0;
         }
         else{
-            if (x.diem > tieu_chi.toDouble()) return 1;
-            else return -1;
+            if (x.diem > tieu_chi.toDouble()) {
+
+                return 1;}
+            else{
+
+                return -1;
+            }
         }
     }
     if (choose == 4){
-        if (lower_case(x.ho) == lower_case(tieu_chi)){
+        if (x.ho.startsWith(tieu_chi, Qt::CaseInsensitive)){
             return 0;
         }
         else{
@@ -278,7 +289,7 @@ int mang::search(int choose, SinhVien x, QString tieu_chi){
     }
 
     if (choose == 5){
-        if (lower_case(x.lop) == lower_case(tieu_chi)){
+        if (x.lop.startsWith(tieu_chi, Qt::CaseInsensitive)){
             return 0;
         }
         else{
@@ -296,34 +307,40 @@ QList<int> mang::tim_kiem_nhi_phan_ds_sv(int choose, QString tieu_chi){
         int m = (l+r)/2;
         int res = search(choose, arr[m], tieu_chi);
         if (res == 0){
-            ans.push_back(m);
+            ans.append(m);
             idx = m;
             break;
         }
         else{
-            if (res == -1) r = m-1;
-            if (res == 1) l = m+1;
+            if (res == -1) l = m+1;
+            if (res == 1) r = m-1;
         }
     }
     int i = idx+1;
     //Dò qua phải
     while (i < arr.size()){
-        if (choose == 1 && lower_case(arr[i].mssv) == lower_case(tieu_chi)) ans.push_back(i);
-        if (choose == 2 && lower_case(arr[i].ho) == lower_case(tieu_chi)) ans.push_back(i);
-        if (choose == 3 && lower_case(arr[i].ten) == lower_case(tieu_chi)) ans.push_back(i);
-        if (choose == 4 && lower_case(arr[i].lop) == lower_case(tieu_chi)) ans.push_back(i);
-        if (choose == 5 && arr[i].diem == tieu_chi.toDouble()) ans.push_back(i);
+        if (choose == 1 && arr[i].mssv.startsWith(tieu_chi, Qt::CaseInsensitive)) ans.append(i);
+        if (choose == 4 && arr[i].ho.startsWith(tieu_chi, Qt::CaseInsensitive)) ans.append(i);
+        if (choose == 2 && arr[i].ten.startsWith(tieu_chi, Qt::CaseInsensitive)) ans.append(i);
+        if (choose == 5 && arr[i].lop.startsWith(tieu_chi, Qt::CaseInsensitive)) ans.append(i);
+        if (choose == 3 && arr[i].diem == tieu_chi.toDouble()) ans.append(i);
         i++;
     }
     i = idx-1;
     //Dò qua trái
     while (i > -1){
-        if (choose == 1 && lower_case(arr[i].mssv) == lower_case(tieu_chi)) ans.push_back(i);
-        if (choose == 2 && lower_case(arr[i].ho) == lower_case(tieu_chi)) ans.push_back(i);
-        if (choose == 3 && lower_case(arr[i].ten) == lower_case(tieu_chi)) ans.push_back(i);
-        if (choose == 4 && lower_case(arr[i].lop) == lower_case(tieu_chi)) ans.push_back(i);
-        if (choose == 5 && arr[i].diem == tieu_chi.toDouble()) ans.push_back(i);
+        if (choose == 1 && arr[i].mssv.startsWith(tieu_chi, Qt::CaseInsensitive)) ans.append(i);
+        if (choose == 4 && arr[i].ho.startsWith(tieu_chi, Qt::CaseInsensitive)) ans.append(i);
+        if (choose == 2 && arr[i].ten.startsWith(tieu_chi, Qt::CaseInsensitive)) ans.append(i);
+        if (choose == 5 && arr[i].lop.startsWith(tieu_chi, Qt::CaseInsensitive)) ans.append(i);
+        if (choose == 3 && arr[i].diem == tieu_chi.toDouble()) ans.append(i);
         i--;
     }
     return ans;
+}
+
+void mang::clear() {
+    while(!arr.empty()){
+        arr.pop_back();
+    }
 }

@@ -46,6 +46,7 @@ public:
     void heap(int n, int i, bool(*cmp)(node* a, node* b));
     void swapNodes(node* node1, node* node2);
     int partition(int low, int high, bool(*cmp)(node* a, node* b));
+    void clear();
 };
 
 #endif // DSLK_KEP_H

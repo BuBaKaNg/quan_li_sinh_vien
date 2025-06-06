@@ -36,6 +36,7 @@ public:
     QList<int> tim_vet_can_ds_sv(int choose, QString tieu_chi);
     QList<int> tim_kiem_nhi_phan_ds_sv(int choose, QString tieu_chi);
     int search(int choose, SinhVien x, QString tieu_chi);
+    void clear();
 };
 
 #endif // MANG_H
